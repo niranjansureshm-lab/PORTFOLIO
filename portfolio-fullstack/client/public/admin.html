@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Niranjan Suresh Portfolio</title>
+<meta name="robots" content="noindex" />
+<style>
+  :root { --bg:#0b0b12; --panel:#13131d; --line:#262636; --text:#e8e8f0; --muted:#8b8ba3; --acc:#8b5cf6; --acc2:#3b82f6; --danger:#ef4444; --ok:#22c55e; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Inter,system-ui,Segoe UI,Arial,sans-serif; background:var(--bg); color:var(--text); }
+  a { color:var(--acc); }
+  button { font:inherit; cursor:pointer; }
+  .hidden { display:none !important; }
+  .btn { background:linear-gradient(135deg,var(--acc),var(--acc2)); color:#fff; border:0; padding:9px 16px; border-radius:10px; font-weight:600; font-size:13px; }
+  .btn.ghost { background:transparent; border:1px solid var(--line); color:var(--text); }
+  .btn.danger { background:var(--danger); }
+  .btn.sm { padding:5px 10px; font-size:12px; border-radius:8px; }
+  .btn:disabled { opacity:.5; cursor:not-allowed; }
+  input, select, textarea { width:100%; background:#0d0d16; border:1px solid var(--line); color:var(--text); border-radius:10px; padding:10px 12px; font:inherit; font-size:14px; outline:none; }
+  input:focus, select:focus, textarea:focus { border-color:var(--acc); }
+  textarea { min-height:90px; resize:vertical; font-family:ui-monospace,Menlo,monospace; font-size:13px; }
+  label { display:block; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:14px 0 6px; }
+  label.check { display:flex; gap:8px; align-items:center; text-transform:none; letter-spacing:0; font-size:14px; color:var(--text); }
+  label.check input { width:auto; }
+
+  /* login */
+  #login { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:28px; }
+  #login .card { width:100%; max-width:380px; }
+  #login h1 { margin:0 0 4px; font-size:22px; }
+  .sub { color:var(--muted); font-size:13px; margin:0 0 8px; }
+  .err { color:var(--danger); font-size:13px; min-height:18px; margin-top:10px; }
+
+  /* app shell */
+  #app { display:flex; min-height:100vh; }
+  aside { width:230px; background:var(--panel); border-right:1px solid var(--line); padding:20px 14px; position:sticky; top:0; height:100vh; display:flex; flex-direction:column; }
+  aside .logo { font-weight:800; letter-spacing:.18em; font-size:13px; padding:0 8px 18px; }
+  aside nav { flex:1; display:flex; flex-direction:column; gap:4px; }
+  aside nav button { text-align:left; background:transparent; border:0; color:var(--muted); padding:10px 12px; border-radius:10px; font-size:14px; display:flex; justify-content:space-between; align-items:center; }
+  aside nav button:hover { color:var(--text); background:#1a1a27; }
+  aside nav button.active { color:#fff; background:#22223a; }
+  .badge { background:var(--acc); color:#fff; border-radius:99px; font-size:11px; padding:1px 7px; }
+  .me { border-top:1px solid var(--line); padding-top:14px; font-size:13px; }
+  .me .role { display:inline-block; margin-top:4px; background:#22223a; border-radius:99px; padding:2px 10px; font-size:11px; color:var(--acc); text-transform:uppercase; letter-spacing:.1em; }
+  main { flex:1; padding:28px; min-width:0; }
+  .head { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:12px; flex-wrap:wrap; }
+  .head h2 { margin:0; font-size:24px; }
+  .menu-btn { display:none; }
+  @media (max-width:800px) {
+    aside { position:fixed; left:-250px; z-index:20; transition:left .2s; }
+    aside.open { left:0; }
+    .menu-btn { display:inline-block; }
+    main { padding:18px; }
+  }
+
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; }
+  .stat { background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px; }
+  .stat .n { font-size:30px; font-weight:800; background:linear-gradient(135deg,var(--acc),var(--acc2)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  .stat .l { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.12em; margin-top:2px; }
+
+  .table-wrap { overflow-x:auto; background:var(--panel); border:1px solid var(--line); border-radius:16px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { padding:12px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--muted); font-size:11px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; }
+  tr:last-child td { border-bottom:0; }
+  td .actions { display:flex; gap:6px; white-space:nowrap; }
+  .pill { display:inline-block; background:#22223a; border-radius:99px; padding:2px 9px; font-size:11px; margin:1px 2px 1px 0; }
+  .pill.off { background:#3a2222; color:#f99; }
+  .pill.ok { background:#16301f; color:#7ee2a0; }
+  .empty { padding:30px; text-align:center; color:var(--muted); }
+
+  .msg { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:12px; }
+  .msg.unread { border-color:var(--acc); }
+  .msg .top { display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; font-size:13px; color:var(--muted); }
+  .msg .top b { color:var(--text); font-size:15px; }
+  .msg p { white-space:pre-wrap; margin:10px 0; font-size:14px; line-height:1.55; }
+
+  /* modal */
+  .overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); display:flex; align-items:flex-start; justify-content:center; padding:5vh 16px; overflow-y:auto; z-index:50; }
+  .modal { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:24px; width:100%; max-width:620px; }
+  .modal h3 { margin:0 0 6px; }
+  .hint { font-size:12px; color:var(--muted); margin-top:4px; }
+  .row { display:flex; gap:10px; justify-content:flex-end; margin-top:22px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:560px) { .grid2 { grid-template-columns:1fr; } }
+
+  .toast { position:fixed; bottom:22px; left:50%; transform:translateX(-50%); background:#1c1c2b; border:1px solid var(--line); padding:11px 18px; border-radius:99px; font-size:13px; z-index:99; }
+  .toast.bad { border-color:var(--danger); color:#fca5a5; }
+  .toast.good { border-color:var(--ok); }
+  .perm-list { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="login">
+  <form class="card" id="loginForm">
+    <h1>Admin Login</h1>
+    <p class="sub">Sign in to manage your portfolio.</p>
+    <label for="lEmail">Email</label>
+    <input id="lEmail" type="email" autocomplete="username" required />
+    <label for="lPass">Password</label>
+    <input id="lPass" type="password" autocomplete="current-password" required />
+    <div class="err" id="loginErr"></div>
+    <button class="btn" style="width:100%;margin-top:6px" type="submit">Sign in</button>
+    <p class="sub" style="margin-top:16px"><a href="/">← Back to portfolio</a></p>
+  </form>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" class="hidden">
+  <aside id="sidebar">
+    <div class="logo">NIRANJAN.S · ADMIN</div>
+    <nav id="nav"></nav>
+    <div class="me">
+      <div id="meName" style="font-weight:600"></div>
+      <div style="color:var(--muted);font-size:12px" id="meEmail"></div>
+      <span class="role" id="meRole"></span>
+      <div style="display:flex;gap:6px;margin-top:12px">
+        <button class="btn ghost sm" id="pwBtn">Password</button>
+        <button class="btn ghost sm" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </aside>
+  <main>
+    <div class="head">
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn ghost sm menu-btn" id="menuBtn">☰</button>
+        <h2 id="title"></h2>
+      </div>
+      <div id="headActions"></div>
+    </div>
+    <div id="view"></div>
+  </main>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+/* ======================================================================
+   Tiny admin SPA (no build step). Talks to /api/* with a JWT.
+   The UI shows/hides things using the permissions returned by /api/auth/me,
+   but the REAL enforcement is on the server (RBAC middleware).
+   ====================================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let token = localStorage.getItem('admin_token');
+let me = null;
+let current = 'dashboard';
+
+async function api(path, opts = {}) {
+  const res = await fetch('/api' + path, {
+    ...opts,
+    headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: 'Bearer ' + token } : {}) },
+    body: opts.body ? JSON.stringify(opts.body) : undefined,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 401 && token) { logout(); throw new Error('Session expired. Please sign in again.'); }
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+function toast(msg, type = 'good') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type; t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2800);
+}
+const can = (p) => me && me.permissions.includes(p);
+
+/* ---------- resource definitions (drive tables + forms) ---------- */
+const RES = {
+  projects: {
+    label: 'Projects', perm: 'projects',
+    cols: [['name', 'Name'], ['category', 'Category'], ['tech', 'Tech', 'tags'], ['published', 'Status', 'status']],
+    fields: [
+      { k: 'name', l: 'Name', req: 1 }, { k: 'slug', l: 'Slug (unique, url-safe)', req: 1 },
+      { k: 'category', l: 'Category' }, { k: 'icon', l: 'Icon name (e.g. Briefcase, Lock, ShieldAlert)', def: 'FolderCode' },
+      { k: 'description', l: 'Description', t: 'textarea', plain: 1 },
+      { k: 'tech', l: 'Tech (comma separated)', t: 'array' },
+      { k: 'filter_tags', l: 'Filter tags (comma separated: AI, Full Stack, Web, Hackathon)', t: 'array' },
+      { k: 'github_url', l: 'GitHub URL' }, { k: 'live_url', l: 'Live URL' },
+      { k: 'detail', l: 'Detail JSON (problem, solution, features[], contribution)', t: 'json', def: {} },
+      { k: 'sort_order', l: 'Order', t: 'number', def: 0 }, { k: 'published', l: 'Published', t: 'bool', def: true },
+    ],
+  },
+  skills: {
+    label: 'Skills', perm: 'skills',
+    cols: [['category', 'Category'], ['name', 'Skill'], ['level', 'Level', 'pct'], ['published', 'Status', 'status']],
+    fields: [
+      { k: 'category', l: 'Category (e.g. Languages)', req: 1 }, { k: 'category_icon', l: 'Category icon (Code2, Monitor, Server, Database, Brain, Wrench)', def: 'Code2' },
+      { k: 'name', l: 'Skill name', req: 1 }, { k: 'description', l: 'Description', plain: 1 },
+      { k: 'level', l: 'Level (0-100)', t: 'number', def: 50 },
+      { k: 'sort_order', l: 'Order', t: 'number', def: 0 }, { k: 'published', l: 'Published', t: 'bool', def: true },
+    ],
+  },
+  experiences: {
+    label: 'Experience', perm: 'experiences',
+    cols: [['role', 'Role'], ['company', 'Company'], ['duration', 'Duration'], ['published', 'Status', 'status']],
+    fields: [
+      { k: 'role', l: 'Role', req: 1 }, { k: 'company', l: 'Company', req: 1 }, { k: 'duration', l: 'Duration' },
+      { k: 'description', l: 'Description', t: 'textarea', plain: 1 },
+      { k: 'highlights', l: 'Highlights JSON  [{"label":"API integration","icon":"Plug"}]', t: 'json', def: [] },
+      { k: 'sort_order', l: 'Order', t: 'number', def: 0 }, { k: 'published', l: 'Published', t: 'bool', def: true },
+    ],
+  },
+  certifications: {
+    label: 'Certifications', perm: 'certifications',
+    cols: [['name', 'Name'], ['provider', 'Provider'], ['year', 'Year'], ['published', 'Status', 'status']],
+    fields: [
+      { k: 'name', l: 'Name', req: 1 }, { k: 'provider', l: 'Provider' }, { k: 'year', l: 'Year' },
+      { k: 'icon', l: 'Icon name (Award, FileCode, Sparkles, MonitorSmartphone)', def: 'Award' },
+      { k: 'sort_order', l: 'Order', t: 'number', def: 0 }, { k: 'published', l: 'Published', t: 'bool', def: true },
+    ],
+  },
+};
+
+const NAV = [
+  ['dashboard', 'Dashboard', 'dashboard:read'],
+  ['projects', 'Projects', 'projects:read'],
+  ['skills', 'Skills', 'skills:read'],
+  ['experiences', 'Experience', 'experiences:read'],
+  ['certifications', 'Certifications', 'certifications:read'],
+  ['messages', 'Messages', 'messages:read'],
+  ['users', 'Users & Roles', 'users:read'],
+];
+
+/* ---------- auth ---------- */
+$('#loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault(); $('#loginErr').textContent = '';
+  try {
+    const { token: t } = await api('/auth/login', { method: 'POST', body: { email: $('#lEmail').value, password: $('#lPass').value } });
+    token = t; localStorage.setItem('admin_token', t);
+    await boot();
+  } catch (err) { $('#loginErr').textContent = err.message; }
+});
+function logout() {
+  token = null; me = null; localStorage.removeItem('admin_token');
+  $('#app').classList.add('hidden'); $('#login').classList.remove('hidden'); $('#lPass').value = '';
+}
+$('#logoutBtn').onclick = logout;
+$('#menuBtn').onclick = () => $('#sidebar').classList.toggle('open');
+
+async function boot() {
+  if (!token) return logout();
+  try { me = (await api('/auth/me')).user; } catch { return logout(); }
+  $('#login').classList.add('hidden'); $('#app').classList.remove('hidden');
+  $('#meName').textContent = me.name; $('#meEmail').textContent = me.email; $('#meRole').textContent = me.role;
+  const allowed = NAV.filter((n) => can(n[2]));
+  if (!allowed.length) { toast('Your account has no permissions', 'bad'); return logout(); }
+  $('#nav').innerHTML = allowed.map(([id, label]) => `<button data-id="${id}">${label}<span class="badge hidden" id="badge-${id}"></span></button>`).join('');
+  $('#nav').onclick = (e) => { const b = e.target.closest('button'); if (b) { go(b.dataset.id); $('#sidebar').classList.remove('open'); } };
+  go(allowed.find((n) => n[0] === current) ? current : allowed[0][0]);
+}
+
+/* ---------- router ---------- */
+async function go(id) {
+  current = id;
+  document.querySelectorAll('#nav button').forEach((b) => b.classList.toggle('active', b.dataset.id === id));
+  $('#title').textContent = NAV.find((n) => n[0] === id)[1];
+  $('#headActions').innerHTML = '';
+  $('#view').innerHTML = '<div class="empty">Loading…</div>';
+  try {
+    if (id === 'dashboard') await viewDashboard();
+    else if (id === 'messages') await viewMessages();
+    else if (id === 'users') await viewUsers();
+    else await viewResource(id);
+  } catch (err) { $('#view').innerHTML = `<div class="empty" style="color:var(--danger)">${esc(err.message)}</div>`; }
+}
+
+/* ---------- dashboard ---------- */
+async function viewDashboard() {
+  const s = await api('/admin/stats');
+  const items = [['projects', 'Projects'], ['skills', 'Skills'], ['experiences', 'Experience'], ['certifications', 'Certifications'], ['messages', 'Messages'], ['unread', 'Unread'], ['users', 'Users']];
+  $('#view').innerHTML = `<div class="stats">${items.map(([k, l]) => `<div class="stat"><div class="n">${s[k]}</div><div class="l">${l}</div></div>`).join('')}</div>
+    <div class="card" style="margin-top:20px"><b>Your access</b><div class="hint">Role: ${esc(me.role)}</div>
+    <div class="perm-list">${me.permissions.map((p) => `<span class="pill">${esc(p)}</span>`).join('')}</div></div>`;
+  setBadge('messages', s.unread);
+}
+function setBadge(id, n) { const b = $('#badge-' + id); if (!b) return; b.textContent = n; b.classList.toggle('hidden', !n); }
+
+/* ---------- generic resource table ---------- */
+function cell(row, [k, , type]) {
+  const v = row[k];
+  if (type === 'tags') return (v || []).map((t) => `<span class="pill">${esc(t)}</span>`).join('');
+  if (type === 'status') return v ? '<span class="pill ok">Published</span>' : '<span class="pill off">Hidden</span>';
+  if (type === 'pct') return esc(v) + '%';
+  return esc(v);
+}
+async function viewResource(id) {
+  const R = RES[id]; const writable = can(R.perm + ':write');
+  const rows = await api('/admin/' + id);
+  if (writable) { $('#headActions').innerHTML = '<button class="btn" id="addBtn">+ Add new</button>'; $('#addBtn').onclick = () => openForm(id); }
+  $('#view').innerHTML = rows.length
+    ? `<div class="table-wrap"><table><thead><tr>${R.cols.map((c) => `<th>${c[1]}</th>`).join('')}${writable ? '<th></th>' : ''}</tr></thead><tbody>
+       ${rows.map((r) => `<tr>${R.cols.map((c) => `<td>${cell(r, c)}</td>`).join('')}${writable ? `<td><div class="actions"><button class="btn ghost sm" data-edit="${r.id}">Edit</button><button class="btn danger sm" data-del="${r.id}">Delete</button></div></td>` : ''}</tr>`).join('')}
+       </tbody></table></div>`
+    : '<div class="empty">Nothing here yet.</div>';
+  $('#view').onclick = async (e) => {
+    const ed = e.target.closest('[data-edit]'), del = e.target.closest('[data-del]');
+    if (ed) openForm(id, rows.find((r) => r.id == ed.dataset.edit));
+    if (del && confirm('Delete this item permanently?')) {
+      try { await api(`/admin/${id}/${del.dataset.del}`, { method: 'DELETE' }); toast('Deleted'); go(id); } catch (err) { toast(err.message, 'bad'); }
+    }
+  };
+}
+
+function openForm(id, row) {
+  const R = RES[id]; const editing = !!row;
+  const html = R.fields.map((f) => {
+    let v = editing ? row[f.k] : f.def;
+    if (v === undefined || v === null) v = f.t === 'bool' ? false : '';
+    if (f.t === 'array') v = (v || []).join(', ');
+    if (f.t === 'json') v = JSON.stringify(v ?? {}, null, 2);
+    const idAttr = `f_${f.k}`;
+    if (f.t === 'bool') return `<label class="check"><input type="checkbox" id="${idAttr}" ${v ? 'checked' : ''}/> ${f.l}</label>`;
+    if (f.t === 'textarea' || f.t === 'json') return `<label for="${idAttr}">${f.l}</label><textarea id="${idAttr}" ${f.plain ? 'style="font-family:inherit;font-size:14px"' : ''}>${esc(v)}</textarea>`;
+    return `<label for="${idAttr}">${f.l}</label><input id="${idAttr}" type="${f.t === 'number' ? 'number' : 'text'}" value="${esc(v)}" ${f.req ? 'required' : ''}/>`;
+  }).join('');
+  modal(`${editing ? 'Edit' : 'Add'} ${R.label.replace(/s$/, '')}`, html, async () => {
+    const body = {};
+    for (const f of R.fields) {
+      const el = $('#f_' + f.k);
+      if (f.t === 'bool') body[f.k] = el.checked;
+      else if (f.t === 'number') body[f.k] = Number(el.value);
+      else if (f.t === 'json') { try { body[f.k] = JSON.parse(el.value || '{}'); } catch { throw new Error(`"${f.k}" is not valid JSON`); } }
+      else body[f.k] = el.value;
+    }
+    await api(`/admin/${id}${editing ? '/' + row.id : ''}`, { method: editing ? 'PUT' : 'POST', body });
+    toast(editing ? 'Saved' : 'Created'); go(id);
+  });
+}
+
+/* ---------- messages ---------- */
+async function viewMessages() {
+  const rows = await api('/admin/messages'); const manage = can('messages:manage');
+  setBadge('messages', rows.filter((m) => !m.is_read).length);
+  $('#view').innerHTML = rows.length ? rows.map((m) => `
+    <div class="msg ${m.is_read ? '' : 'unread'}">
+      <div class="top"><span><b>${esc(m.name)}</b> &lt;<a href="mailto:${esc(m.email)}">${esc(m.email)}</a>&gt;</span><span>${new Date(m.created_at).toLocaleString()}</span></div>
+      <p>${esc(m.message)}</p>
+      ${manage ? `<div style="display:flex;gap:6px"><button class="btn ghost sm" data-read="${m.id}" data-val="${!m.is_read}">${m.is_read ? 'Mark unread' : 'Mark read'}</button><button class="btn danger sm" data-del="${m.id}">Delete</button></div>` : ''}
+    </div>`).join('') : '<div class="empty">No messages yet.</div>';
+  $('#view').onclick = async (e) => {
+    const r = e.target.closest('[data-read]'), d = e.target.closest('[data-del]');
+    try {
+      if (r) { await api(`/admin/messages/${r.dataset.read}/read`, { method: 'PATCH', body: { is_read: r.dataset.val === 'true' } }); go('messages'); }
+      if (d && confirm('Delete this message?')) { await api(`/admin/messages/${d.dataset.del}`, { method: 'DELETE' }); go('messages'); }
+    } catch (err) { toast(err.message, 'bad'); }
+  };
+}
+
+/* ---------- users & roles ---------- */
+async function viewUsers() {
+  const [users, roles] = await Promise.all([api('/admin/users'), api('/admin/roles')]);
+  const manage = can('users:manage');
+  if (manage) { $('#headActions').innerHTML = '<button class="btn" id="addUser">+ Add user</button>'; $('#addUser').onclick = () => userForm(roles); }
+  $('#view').innerHTML = `
+    <div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th>${manage ? '<th></th>' : ''}</tr></thead><tbody>
+    ${users.map((u) => `<tr><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td><span class="pill">${esc(u.role)}</span></td>
+      <td>${u.is_active ? '<span class="pill ok">Active</span>' : '<span class="pill off">Disabled</span>'}</td>
+      ${manage ? `<td><div class="actions"><button class="btn ghost sm" data-edit="${u.id}">Edit</button>${u.id !== me.id ? `<button class="btn danger sm" data-del="${u.id}">Delete</button>` : ''}</div></td>` : ''}</tr>`).join('')}
+    </tbody></table></div>
+    <h3 style="margin:28px 0 12px">Role permissions</h3>
+    <div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+      ${roles.map((r) => `<div class="card"><b style="text-transform:capitalize">${esc(r.name)}</b><div class="hint">${esc(r.description)}</div><div class="perm-list">${r.permissions.map((p) => `<span class="pill">${esc(p)}</span>`).join('')}</div></div>`).join('')}
+    </div>`;
+  $('#view').onclick = async (e) => {
+    const ed = e.target.closest('[data-edit]'), del = e.target.closest('[data-del]');
+    if (ed) userForm(roles, users.find((u) => u.id == ed.dataset.edit));
+    if (del && confirm('Delete this user?')) {
+      try { await api('/admin/users/' + del.dataset.del, { method: 'DELETE' }); toast('User deleted'); go('users'); } catch (err) { toast(err.message, 'bad'); }
+    }
+  };
+}
+function userForm(roles, u) {
+  const editing = !!u;
+  const html = `
+    <label for="u_name">Name</label><input id="u_name" value="${esc(u?.name)}" required />
+    <label for="u_email">Email</label><input id="u_email" type="email" value="${esc(u?.email)}" ${editing ? 'disabled' : ''} required />
+    <label for="u_role">Role</label><select id="u_role">${roles.map((r) => `<option value="${esc(r.name)}" ${u?.role === r.name ? 'selected' : ''}>${esc(r.name)}</option>`).join('')}</select>
+    <label for="u_pass">${editing ? 'New password (leave blank to keep)' : 'Password (min 8 chars)'}</label><input id="u_pass" type="password" autocomplete="new-password" />
+    ${editing ? `<label class="check"><input type="checkbox" id="u_active" ${u.is_active ? 'checked' : ''}/> Account active</label>` : ''}`;
+  modal(editing ? 'Edit user' : 'Add user', html, async () => {
+    const body = { name: $('#u_name').value, role: $('#u_role').value };
+    if ($('#u_pass').value) body.password = $('#u_pass').value;
+    if (editing) { body.is_active = $('#u_active').checked; await api('/admin/users/' + u.id, { method: 'PUT', body }); }
+    else { body.email = $('#u_email').value; await api('/admin/users', { method: 'POST', body }); }
+    toast('Saved'); go('users');
+  });
+}
+
+/* ---------- change my password ---------- */
+$('#pwBtn').onclick = () => modal('Change password', `
+  <label for="p_cur">Current password</label><input id="p_cur" type="password" autocomplete="current-password" />
+  <label for="p_new">New password (min 8 chars)</label><input id="p_new" type="password" autocomplete="new-password" />`,
+  async () => { await api('/auth/password', { method: 'PUT', body: { currentPassword: $('#p_cur').value, newPassword: $('#p_new').value } }); toast('Password updated'); });
+
+/* ---------- modal helper ---------- */
+function modal(title, bodyHtml, onSave) {
+  const root = $('#modalRoot');
+  root.innerHTML = `<div class="overlay"><form class="modal"><h3>${esc(title)}</h3>${bodyHtml}<div class="err" id="mErr"></div>
+    <div class="row"><button type="button" class="btn ghost" id="mCancel">Cancel</button><button class="btn" type="submit" id="mSave">Save</button></div></form></div>`;
+  const close = () => (root.innerHTML = '');
+  $('#mCancel').onclick = close;
+  $('.overlay', root).addEventListener('mousedown', (e) => { if (e.target.classList.contains('overlay')) close(); });
+  $('.modal', root).addEventListener('submit', async (e) => {
+    e.preventDefault(); $('#mErr').textContent = ''; $('#mSave').disabled = true;
+    try { await onSave(); close(); } catch (err) { $('#mErr').textContent = err.message; $('#mSave').disabled = false; }
+  });
+}
+
+boot();
+</script>
+</body>
+</html>

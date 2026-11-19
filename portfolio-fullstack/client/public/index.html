@@ -1,0 +1,2510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Niranjan Suresh — AI & Full-Stack Developer</title>
+<meta name="description" content="Niranjan Suresh — AI & Data Science student and aspiring AI/Full-Stack Developer." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/framer-motion@10.18.0/dist/framer-motion.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+        keyframes: {
+          marquee: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } },
+          ripple: { '0%': { transform: 'scale(0)', opacity: '0.6' }, '100%': { transform: 'scale(4)', opacity: '0' } },
+        },
+        animation: { marquee: 'marquee 40s linear infinite', ripple: 'ripple 0.7s ease-out forwards' },
+      },
+    },
+  };
+</script>
+
+<style>
+  :root { --accent-1: #a78bfa; --accent-2: #8b5cf6; --accent-3: #60a5fa; --accent-4: #3b82f6; }
+  [data-accent="purple"] { --accent-1:#a78bfa; --accent-2:#8b5cf6; --accent-3:#60a5fa; --accent-4:#3b82f6; }
+  [data-accent="blue"]   { --accent-1:#60a5fa; --accent-2:#3b82f6; --accent-3:#22d3ee; --accent-4:#0891b2; }
+  [data-accent="cyan"]   { --accent-1:#22d3ee; --accent-2:#06b6d4; --accent-3:#67e8f9; --accent-4:#0891b2; }
+  [data-accent="pink"]   { --accent-1:#f0abfc; --accent-2:#d946ef; --accent-3:#a78bfa; --accent-4:#7c3aed; }
+
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body { background:#000; color:#fff; font-family: Inter, system-ui, sans-serif; overflow-x:hidden; margin:0; }
+  ::selection { background: rgba(139,92,246,0.4); color:#fff; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background:#0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg,var(--accent-2),var(--accent-4)); border-radius:4px; }
+
+  * { cursor: none !important; }
+  @media (hover: none), (max-width: 768px) {
+    * { cursor: auto !important; }
+    .custom-cursor, .custom-cursor-ring { display: none !important; }
+  }
+  .custom-cursor { position: fixed; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-1);
+    box-shadow: 0 0 12px var(--accent-1), 0 0 24px var(--accent-2); pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s; mix-blend-mode: screen; }
+  .custom-cursor-ring { position: fixed; width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid rgba(167,139,250,0.6); pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%); transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease; }
+  .custom-cursor-ring.hover { width: 60px; height: 60px; border-color: var(--accent-3); background: rgba(96,165,250,0.08); }
+
+  .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+  .glass-strong { background: rgba(255,255,255,0.05); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.1); }
+  .gradient-text { background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-3) 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .accent-bg { background: linear-gradient(135deg, var(--accent-2), var(--accent-4)); }
+
+  .social-box {
+    display: flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.75);
+    transition: all 0.25s cubic-bezier(0.22,1,0.36,1);
+    position: relative; overflow: hidden;
+  }
+  .social-box svg { position: relative; z-index: 2; }
+  .social-box:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(167,139,250,0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px -10px var(--accent-2);
+  }
+  .social-box::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--accent-2), var(--accent-4));
+    opacity: 0; transition: opacity 0.25s ease; z-index: 1;
+  }
+  .social-box:hover::before { opacity: 0.12; }
+  .social-box.sm { width: 40px; height: 40px; border-radius: 12px; }
+  .social-box.sm svg { width: 16px !important; height: 16px !important; }
+
+  .ripple-el { position: fixed; border-radius: 50%; pointer-events: none; z-index: 9997;
+    background: radial-gradient(circle, var(--accent-1), transparent 70%); }
+
+  .section-dots { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); z-index: 40;
+    display: flex; flex-direction: column; gap: 12px; }
+  @media (max-width: 1024px) { .section-dots { display: none; } }
+  .section-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.2);
+    transition: all 0.3s ease; cursor: pointer; position: relative; }
+  .section-dot:hover { background: rgba(255,255,255,0.5); transform: scale(1.3); }
+  .section-dot.active { background: var(--accent-1); box-shadow: 0 0 12px var(--accent-1); transform: scale(1.4); }
+  .section-dot::after { content: attr(data-label); position: absolute; right: 22px; top: 50%;
+    transform: translateY(-50%); opacity: 0; pointer-events: none;
+    background: rgba(15,15,20,0.9); border: 1px solid rgba(255,255,255,0.1);
+    padding: 4px 10px; border-radius: 6px; font-size: 11px; white-space: nowrap;
+    transition: opacity 0.2s; color: rgba(255,255,255,0.8); }
+  .section-dot:hover::after { opacity: 1; }
+
+  .preloader { position: fixed; inset: 0; background: #000; z-index: 10000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
+  .preloader-logo { font-size: 28px; font-weight: 800; letter-spacing: 0.3em;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .preloader-bar { width: 220px; height: 2px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+  .preloader-bar > div { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+    border-radius: 999px; transition: width 0.25s ease; }
+  .preloader-pct { font-family: JetBrains Mono, monospace; font-size: 11px; color: rgba(255,255,255,0.5); }
+
+  .scroll-progress { position: fixed; top: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent-3)); z-index: 60;
+    box-shadow: 0 0 12px var(--accent-2); transition: width 0.1s ease-out; }
+
+  .ab-root { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; contain: strict; }
+  .ab-base { position: absolute; inset: 0; background: #000; }
+  .ab-orbs-layer { position: absolute; inset: 0; will-change: transform; }
+  .ab-orb { position: absolute; border-radius: 50%; filter: blur(100px); mix-blend-mode: screen; opacity: 0.55; will-change: transform, opacity; }
+  .ab-orb-1 { width: 60vw; height: 60vw; max-width: 900px; max-height: 900px; top: -18%; left: -12%;
+    background: radial-gradient(circle at center, var(--accent-2), transparent 70%); animation: abOrb1 32s ease-in-out infinite alternate; }
+  @keyframes abOrb1 { 0% { transform: translate3d(0,0,0) scale(1); opacity: 0.4; } 50% { transform: translate3d(35vw,22vh,0) scale(1.12); opacity: 0.6; } 100% { transform: translate3d(70vw,-6vh,0) scale(1.04); opacity: 0.45; } }
+  .ab-orb-2 { width: 55vw; height: 55vw; max-width: 820px; max-height: 820px; bottom: -20%; right: -14%;
+    background: radial-gradient(circle at center, var(--accent-4), transparent 70%); animation: abOrb2 38s ease-in-out infinite alternate; }
+  @keyframes abOrb2 { 0% { transform: translate3d(0,0,0) scale(1); opacity: 0.45; } 50% { transform: translate3d(-38vw,-20vh,0) scale(1.14); opacity: 0.65; } 100% { transform: translate3d(-68vw,8vh,0) scale(1.06); opacity: 0.45; } }
+  .ab-orb-3 { width: 42vw; height: 42vw; max-width: 620px; max-height: 620px; top: 30%; left: 55%;
+    background: radial-gradient(circle at center, var(--accent-1), transparent 70%); animation: abOrb3 26s ease-in-out infinite alternate; }
+  @keyframes abOrb3 { 0% { transform: translate3d(0,-18vh,0) scale(1); opacity: 0.35; } 100% { transform: translate3d(-6vw,22vh,0) scale(1.1); opacity: 0.55; } }
+  .ab-orb-4 { width: 38vw; height: 38vw; max-width: 560px; max-height: 560px; top: 55%; left: -8%;
+    background: radial-gradient(circle at center, var(--accent-2), transparent 70%); animation: abOrb4 34s ease-in-out infinite alternate; }
+  @keyframes abOrb4 { 0% { transform: translate3d(0,0,0) scale(1); opacity: 0.4; } 100% { transform: translate3d(45vw,-40vh,0) scale(1.15); opacity: 0.6; } }
+  .ab-orb-5 { width: 30vw; height: 30vw; max-width: 460px; max-height: 460px; top: 15%; left: 30%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.14), transparent 70%); animation: abOrb5 42s ease-in-out infinite alternate; }
+  @keyframes abOrb5 { 0% { transform: translate3d(0,0,0) scale(0.9) rotate(0deg); opacity: 0.3; } 50% { transform: translate3d(12vw,14vh,0) scale(1.15) rotate(120deg); opacity: 0.5; } 100% { transform: translate3d(-8vw,-6vh,0) scale(1.0) rotate(240deg); opacity: 0.35; } }
+  .ab-orb-6 { width: 34vw; height: 34vw; max-width: 520px; max-height: 520px; top: 70%; left: 40%;
+    background: radial-gradient(circle at center, var(--accent-3), transparent 70%); animation: abOrb6 28s ease-in-out infinite alternate; }
+  @keyframes abOrb6 { 0% { transform: translate3d(-18vw,8vh,0) scale(1); opacity: 0.35; } 100% { transform: translate3d(20vw,-18vh,0) scale(1.12); opacity: 0.55; } }
+  .ab-hero-glow { position: absolute; left: 50%; top: 42%; width: 90vw; height: 90vw; max-width: 1200px; max-height: 1200px;
+    transform: translate(-50%,-50%);
+    background: radial-gradient(circle at center,
+      color-mix(in srgb, var(--accent-2) 22%, transparent) 0%,
+      color-mix(in srgb, var(--accent-4) 14%, transparent) 35%, transparent 65%);
+    filter: blur(40px); animation: abHeroBreath 10s ease-in-out infinite; }
+  @keyframes abHeroBreath { 0%,100% { opacity: 0.15; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 0.30; transform: translate(-50%,-50%) scale(1.08); } }
+  .ab-light { position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--accent-2) 6%, transparent), transparent 55%),
+      radial-gradient(ellipse at 80% 80%, color-mix(in srgb, var(--accent-4) 6%, transparent), transparent 55%); }
+  .ab-particles { position: absolute; inset: 0; will-change: transform; }
+  .ab-particle { position: absolute; border-radius: 50%; background: var(--accent-1); box-shadow: 0 0 6px var(--accent-1);
+    animation: abFloat var(--dur, 18s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
+  @keyframes abFloat { 0% { transform: translate3d(0,0,0); opacity: 0; } 20% { opacity: var(--peak, 0.6); } 50% { transform: translate3d(var(--dx,20px), var(--dy,-40px), 0); opacity: var(--peak, 0.6); } 80% { opacity: var(--peak, 0.6); } 100% { transform: translate3d(0,0,0); opacity: 0; } }
+  .ab-grid { position: absolute; inset: 0; opacity: 0.05;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.6) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.6) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 75%); }
+  .ab-noise { position: absolute; inset: 0; opacity: 0.03; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .ab-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%); }
+
+  .photo-avatar-stage { position: relative; width: 100%; max-width: 560px; aspect-ratio: 1 / 1; margin: 0 auto;
+    perspective: 1400px; perspective-origin: 50% 45%; }
+  .avatar-platform { position: absolute; left: 50%; bottom: 4%; width: 68%; height: 12%; transform: translateX(-50%);
+    background: radial-gradient(ellipse at center,
+      color-mix(in srgb, var(--accent-2) 65%, transparent) 0%,
+      color-mix(in srgb, var(--accent-2) 20%, transparent) 45%, transparent 75%);
+    filter: blur(22px); animation: platformPulse 5s ease-in-out infinite; }
+  @keyframes platformPulse { 0%,100% { opacity: 0.7; transform: translateX(-50%) scale(1); } 50% { opacity: 1; transform: translateX(-50%) scale(1.1); } }
+  .avatar-ring { position: absolute; left: 50%; top: 50%; width: 88%; height: 88%; transform: translate(-50%,-50%);
+    border-radius: 50%; border: 1px solid color-mix(in srgb, var(--accent-1) 28%, transparent);
+    box-shadow: 0 0 60px color-mix(in srgb, var(--accent-2) 30%, transparent), inset 0 0 60px color-mix(in srgb, var(--accent-2) 18%, transparent);
+    animation: ringSpin 22s linear infinite; }
+  .avatar-ring::before { content: ''; position: absolute; top: -5px; left: 50%; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent-1); box-shadow: 0 0 16px var(--accent-1), 0 0 32px var(--accent-2); transform: translateX(-50%); }
+  @keyframes ringSpin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+  .avatar-ring-2 { position: absolute; left: 50%; top: 50%; width: 104%; height: 104%; transform: translate(-50%,-50%);
+    border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--accent-3) 22%, transparent);
+    animation: ringSpin2 44s linear infinite reverse; }
+  @keyframes ringSpin2 { to { transform: translate(-50%,-50%) rotate(360deg); } }
+  .avatar-glow { position: absolute; inset: 12%; border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%,
+      color-mix(in srgb, var(--accent-2) 65%, transparent) 0%,
+      color-mix(in srgb, var(--accent-4) 35%, transparent) 42%, transparent 72%);
+    filter: blur(38px); animation: avatarGlow 5s ease-in-out infinite; }
+  @keyframes avatarGlow { 0%,100% { opacity: 0.75; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+  .avatar-photo-wrap { position: absolute; left: 50%; top: 50%; width: 76%; height: 76%; transform: translate(-50%, -50%);
+    border-radius: 50%; overflow: hidden; animation: avatarFloat 6.5s ease-in-out infinite;
+    transform-style: preserve-3d; will-change: transform;
+    box-shadow: 0 30px 80px -20px color-mix(in srgb, var(--accent-2) 55%, transparent), 0 0 0 1px rgba(255,255,255,0.08), inset 0 0 60px color-mix(in srgb, var(--accent-2) 15%, transparent); }
+  @keyframes avatarFloat {
+    0%, 100% { transform: translate(-50%,-50%) translateY(0)    rotateY(-4deg) rotateX(2deg); }
+    50%      { transform: translate(-50%,-52%) translateY(-12px) rotateY(4deg)  rotateX(-2deg); }
+  }
+  .avatar-photo { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block;
+    filter: contrast(1.05) saturate(1.05) brightness(0.98); transform: scale(1.02);
+    transition: transform 0.7s cubic-bezier(0.22,1,0.36,1); user-select: none; -webkit-user-drag: none; }
+  .avatar-photo-wrap::after { content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 20%, transparent 40%, color-mix(in srgb, var(--accent-2) 25%, transparent) 100%),
+      linear-gradient(180deg, transparent 60%, color-mix(in srgb, #000 55%, transparent) 100%);
+    mix-blend-mode: multiply; }
+  .avatar-scan { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; pointer-events: none; }
+  .avatar-scan::before { content: ''; position: absolute; left: 0; right: 0; height: 8px;
+    background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--accent-1) 70%, transparent), transparent);
+    animation: scanMove 4s linear infinite; mix-blend-mode: screen; }
+  @keyframes scanMove { 0% { top: -10%; opacity: 0; } 10% { opacity: 0.9; } 90% { opacity: 0.9; } 100% { top: 110%; opacity: 0; } }
+  .avatar-grid-overlay { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; opacity: 0.15;
+    background-image:
+      linear-gradient(to right, rgba(167,139,250,0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(167,139,250,0.4) 1px, transparent 1px);
+    background-size: 24px 24px;
+    mask-image: radial-gradient(circle at 50% 50%, transparent 30%, black 70%, transparent 95%);
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 30%, black 70%, transparent 95%);
+    mix-blend-mode: overlay; }
+
+  .hud-chip { position: absolute; border-radius: 14px; padding: 8px 12px; background: rgba(15,15,20,0.8);
+    border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(16px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6); font-size: 10px; letter-spacing: 0.08em; color: rgba(255,255,255,0.8);
+    display: flex; align-items: center; gap: 6px; white-space: nowrap; z-index: 5; }
+  .hud-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-1); box-shadow: 0 0 8px var(--accent-1);
+    animation: dotPulse 2s ease-in-out infinite; }
+  @keyframes dotPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .hud-1 { top: 6%; left: 0%;   animation: hudFloat 5.4s ease-in-out infinite; }
+  .hud-2 { top: 22%; right: -2%; animation: hudFloat 6.6s ease-in-out infinite reverse; }
+  .hud-3 { bottom: 20%; left: -2%; animation: hudFloat 7.2s ease-in-out infinite; }
+  .hud-4 { bottom: 8%;  right: 2%;  animation: hudFloat 5.8s ease-in-out infinite reverse; }
+  @keyframes hudFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .corner-bracket { position: absolute; width: 28px; height: 28px; border-color: var(--accent-1); border-style: solid;
+    opacity: 0.5; animation: cornerPulse 3s ease-in-out infinite; }
+  @keyframes cornerPulse { 0%,100% { opacity: 0.35; } 50% { opacity: 0.75; } }
+  .corner-tl { top: 4%;  left: 4%;  border-width: 2px 0 0 2px; border-top-left-radius: 8px; }
+  .corner-tr { top: 4%;  right: 4%; border-width: 2px 2px 0 0; border-top-right-radius: 8px; }
+  .corner-bl { bottom: 4%; left: 4%;  border-width: 0 0 2px 2px; border-bottom-left-radius: 8px; }
+  .corner-br { bottom: 4%; right: 4%; border-width: 0 2px 2px 0; border-bottom-right-radius: 8px; }
+
+  .typewriter-cursor { display: inline-block; width: 3px; height: 1em; background: var(--accent-1);
+    margin-left: 4px; vertical-align: middle; animation: twBlink 1s step-end infinite; }
+  @keyframes twBlink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+  .marquee-track { display: flex; gap: 2rem; width: max-content; animation: marquee 40s linear infinite; }
+  .marquee-track:hover { animation-play-state: paused; }
+
+  .skill-bar-track { height: 4px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
+  .skill-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent-3)); border-radius: 999px; }
+
+  .chat-bubble { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.5; }
+  .chat-bot  { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
+  .chat-user { background: linear-gradient(135deg, var(--accent-2), var(--accent-4)); color: white; margin-left: auto; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 9999;
+    padding: 12px 20px; border-radius: 999px; background: rgba(20,20,25,0.95);
+    border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(14px);
+    color: white; font-size: 13px; box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    display: flex; align-items: center; gap: 10px; }
+
+  .confetti-piece { position: fixed; width: 8px; height: 8px; top: -20px; z-index: 9999;
+    pointer-events: none; animation: confettiFall linear forwards; }
+  @keyframes confettiFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+
+  .tilt-card { transform-style: preserve-3d; transition: transform 0.2s ease-out; }
+
+  .cmd-overlay { position: fixed; inset: 0; z-index: 9998;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+    display: flex; align-items: flex-start; justify-content: center; padding-top: 12vh; }
+  .cmd-box { width: 100%; max-width: 560px; border-radius: 16px;
+    background: rgba(15,15,20,0.95); border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.8); overflow: hidden; }
+  .cmd-input { width: 100%; padding: 16px 20px; background: transparent; border: none;
+    color: white; font-size: 15px; outline: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .cmd-list { max-height: 400px; overflow-y: auto; padding: 8px; }
+  .cmd-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+    border-radius: 10px; cursor: pointer; transition: background 0.15s; }
+  .cmd-item:hover, .cmd-item.active { background: rgba(255,255,255,0.06); }
+  .cmd-item.active { border-left: 2px solid var(--accent-1); }
+
+  .magnetic { transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
+
+  .snake-grid { display: grid; gap: 1px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 12px; }
+  .snake-cell { aspect-ratio: 1; background: rgba(255,255,255,0.02); border-radius: 2px; }
+  .snake-cell.snake { background: var(--accent-1); box-shadow: 0 0 8px var(--accent-1); }
+  .snake-cell.food { background: #f87171; box-shadow: 0 0 8px #f87171; }
+
+  .achievement { position: fixed; top: 80px; right: 20px; z-index: 9999;
+    padding: 12px 16px; border-radius: 14px; display: flex; align-items: center; gap: 10px;
+    background: rgba(20,20,25,0.95); border: 1px solid var(--accent-1);
+    box-shadow: 0 0 30px -5px var(--accent-2); max-width: 280px; }
+
+  .skill-icon-box { display: flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.08); transition: transform 0.3s ease; }
+  .group:hover .skill-icon-box { transform: rotate(6deg) scale(1.05); }
+
+  @media (max-width: 768px) {
+    .ab-orb { filter: blur(70px); opacity: 0.45; }
+    .ab-orb-1, .ab-orb-2 { width: 90vw; height: 90vw; }
+    .ab-orb-3, .ab-orb-4, .ab-orb-6 { width: 70vw; height: 70vw; }
+    .ab-orb-5 { width: 55vw; height: 55vw; }
+    .hud-chip { font-size: 9px; padding: 6px 9px; }
+    .social-box { width: 44px; height: 44px; border-radius: 12px; }
+    .social-box.sm { width: 36px; height: 36px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react" data-type="module">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+// Safe framer-motion access
+const FM = window.Motion || window.FramerMotion || null;
+const m = FM ? FM.motion : null;
+const AnimatePresenceC = FM ? FM.AnimatePresence : ({children}) => <>{children}</>;
+
+const MDiv    = m ? m.div    : 'div';
+const MH1     = m ? m.h1     : 'h1';
+const MP      = m ? m.p      : 'p';
+const MSpan   = m ? m.span   : 'span';
+const MHeader = m ? m.header : 'header';
+
+const AVATAR_PHOTO_URL = 'https://i.ibb.co/tM3fxYxp/Whats-App-Image-2026-08-24-at-3-13-11-PM.jpg';
+
+/* ============================================================
+   HARDCODED SVG ICONS
+============================================================ */
+const H = {
+  Bot: ({ size = 20, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V5"/>
+      <circle cx="12" cy="4" r="1.2" fill="currentColor" stroke="none"/>
+      <circle cx="9" cy="14" r="1.2" fill="currentColor" stroke="none"/>
+      <circle cx="15" cy="14" r="1.2" fill="currentColor" stroke="none"/>
+      <path d="M9 17h6M2 12v4M22 12v4"/>
+    </svg>
+  ),
+  MessageCircle: ({ size = 20, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </svg>
+  ),
+  Palette: ({ size = 18, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+      <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+    </svg>
+  ),
+  Volume2: ({ size = 18, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </svg>
+  ),
+  VolumeX: ({ size = 18, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+  ),
+  Mic: ({ size = 14, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="9" y="2" width="6" height="12" rx="3"/>
+      <path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v4M8 23h8"/>
+    </svg>
+  ),
+  Send: ({ size = 14, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+    </svg>
+  ),
+  X: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  ),
+  Menu: ({ size = 18, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  ),
+  Search: ({ size = 14, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+  ),
+  ArrowRight: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+    </svg>
+  ),
+  ArrowUp: ({ size = 18, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+    </svg>
+  ),
+  ArrowUpRight: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+    </svg>
+  ),
+  Share2: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+    </svg>
+  ),
+  Sparkles: ({ size = 12, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M12 3l1.8 5.5L19 10l-5.2 1.5L12 17l-1.8-5.5L5 10l5.2-1.5L12 3z"/>
+      <path d="M19 14l.8 2.4L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.6L19 14z"/>
+    </svg>
+  ),
+  Brain: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/>
+      <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/>
+    </svg>
+  ),
+  Layers: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+      <polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+    </svg>
+  ),
+  FolderCode: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M4 4h5l2 3h9v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
+      <path d="M10 13l-2 2 2 2M15 13l2 2-2 2"/>
+    </svg>
+  ),
+  Award: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="12" cy="8" r="6"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+    </svg>
+  ),
+  GraduationCap: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+    </svg>
+  ),
+  Target: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+    </svg>
+  ),
+  Rocket: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91 0z"/>
+      <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+    </svg>
+  ),
+  MapPin: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+    </svg>
+  ),
+  Lightbulb: ({ size = 22, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M9 18h6M10 22h4"/>
+      <path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V18h6v-1.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/>
+    </svg>
+  ),
+  Code2: ({ size = 18, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+    </svg>
+  ),
+  Monitor: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+    </svg>
+  ),
+  Server: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/>
+      <line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/>
+    </svg>
+  ),
+  Database: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>
+    </svg>
+  ),
+  Wrench: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M14.7 6.3a4 4 0 0 0 5 5l-9 9-5-5 9-9z"/>
+    </svg>
+  ),
+  Briefcase: ({ size = 22, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+    </svg>
+  ),
+  ShieldAlert: ({ size = 22, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      <line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+  ),
+  Lock: ({ size = 22, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+  ),
+  Calendar: ({ size = 11, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+  ),
+  Building2: ({ size = 12, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18M6 12H4a2 2 0 0 0-2 2v8h4M18 9h2a2 2 0 0 1 2 2v11h-4"/>
+    </svg>
+  ),
+  Plug: ({ size = 11, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M12 22v-5M9 8V2M15 8V2M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/>
+    </svg>
+  ),
+  Users: ({ size = 11, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  ),
+  FileCode: ({ size = 18, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/><path d="M10 13l-2 2 2 2M14 13l2 2-2 2"/>
+    </svg>
+  ),
+  MonitorSmartphone: ({ size = 18, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8"/>
+      <path d="M10 19v-3.96"/>
+      <rect x="14" y="12" width="8" height="10" rx="2"/><line x1="18" y1="18" x2="18.01" y2="18"/>
+    </svg>
+  ),
+  Quote: ({ size = 32, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
+    </svg>
+  ),
+  Trophy: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16"/>
+      <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+      <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+    </svg>
+  ),
+  User: ({ size = 12, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+    </svg>
+  ),
+  Mail: ({ size = 14, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6 9 6 9-6"/>
+    </svg>
+  ),
+  MessageSquare: ({ size = 12, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  ),
+  Check: ({ size = 28, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  ),
+  Clock: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+    </svg>
+  ),
+  Compass: ({ size = 16, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+    </svg>
+  ),
+  FileText: ({ size = 14, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+    </svg>
+  ),
+  ExternalLink: ({ size = 14, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+      <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+    </svg>
+  ),
+  MousePointerClick: ({ size = 12, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M9 11V4a1 1 0 0 1 2 0v7h1V6a1 1 0 0 1 2 0v5h1V8a1 1 0 0 1 2 0v8a5 5 0 0 1-5 5h-1a6 6 0 0 1-5.2-3l-2-3.6a1 1 0 0 1 1.7-1l1.3 2.1"/>
+    </svg>
+  ),
+  Music: ({ size = 14, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+    </svg>
+  ),
+  Link: ({ size = 14, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </svg>
+  ),
+  Instagram: ({ size = 20, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+    </svg>
+  ),
+  Github: ({ size = 20, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.14c-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a11 11 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.73.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.39-5.25 5.67.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
+    </svg>
+  ),
+  LinkedIn: ({ size = 20, className = '' }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+    </svg>
+  ),
+};
+
+function Icon({ name, size = 16, className = '', ...rest }) {
+  const Cmp = H[name];
+  if (Cmp) return <Cmp size={size} className={className} {...rest} />;
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} {...rest}><circle cx="12" cy="12" r="9" /></svg>;
+}
+
+/* Tech brand icons */
+const BrandIcons = {
+  Python: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none">
+      <path d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.007 2.752h5.814v.826H3.9S0 5.789 0 11.969c0 6.18 3.403 5.96 3.403 5.96h2.03v-2.867s-.11-3.402 3.344-3.402h5.765s3.236.052 3.236-3.13V3.502S18.27 0 11.914 0zM8.7 1.834a1.05 1.05 0 110 2.1 1.05 1.05 0 010-2.1z" fill="#3776AB"/>
+      <path d="M12.086 24c6.094 0 5.714-2.656 5.714-2.656l-.007-2.752h-5.814v-.826h8.12S24 18.211 24 12.031c0-6.18-3.403-5.96-3.403-5.96h-2.03v2.867s.11 3.402-3.344 3.402H9.458s-3.236-.052-3.236 3.13v4.998S5.73 24 12.086 24zm3.214-1.834a1.05 1.05 0 110-2.1 1.05 1.05 0 010 2.1z" fill="#FFD43B"/>
+    </svg>
+  ),
+  Java: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none">
+      <path d="M8.851 18.56s-.917.534.653.714c1.902.218 2.874.187 4.969-.211 0 0 .552.346 1.321.646-4.699 2.013-10.633-.118-6.943-1.149zM8.276 15.933s-1.028.761.542.924c2.032.209 3.636.227 6.413-.308 0 0 .384.389.987.602-5.679 1.661-12.007.13-7.942-1.218zM13.116 11.475c1.158 1.333-.304 2.533-.304 2.533s2.939-1.518 1.589-3.418c-1.261-1.772-2.228-2.652 3.007-5.688 0 0-8.216 2.051-4.292 6.573z" fill="#EA2D2E"/>
+      <path d="M19.344 20.604s.679.559-.747 1.001c-2.712.823-11.282 1.07-13.662.033-.856-.373.75-.892 1.255-.999.527-.113.826-.092.826-.092-.951-.67-6.15 1.317-2.64 1.885 9.567 1.551 17.435-.698 14.968-1.828zM9.292 13.209s-4.362 1.036-1.544 1.412c1.189.159 3.561.123 5.771-.062 1.805-.151 3.619-.474 3.619-.474s-.637.272-1.098.586c-4.432 1.166-12.993.622-10.528-.569 2.079-1.007 3.78-.893 3.78-.893zM17.116 17.585c4.511-2.342 2.425-4.594.969-4.289-.357.075-.516.14-.516.14s.133-.207.386-.296c2.878-1.012 5.092 2.984-.934 4.566 0 0 .071-.062.095-.121z" fill="#EA2D2E"/>
+    </svg>
+  ),
+  JavaScript: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size}>
+      <rect width="24" height="24" rx="3" fill="#F7DF1E"/>
+      <path d="M12.5 18.5c.4.7 1 1.3 2.1 1.3 1 0 1.6-.5 1.6-1.2 0-.8-.6-1.1-1.7-1.6l-.6-.3c-1.7-.7-2.8-1.6-2.8-3.5 0-1.7 1.3-3 3.4-3 1.5 0 2.5.5 3.3 1.9l-1.8 1.2c-.4-.7-.8-1-1.5-1-.7 0-1.1.4-1.1 1 0 .7.4 1 1.5 1.4l.6.3c2 .9 3.1 1.7 3.1 3.7 0 2-1.6 3.2-3.7 3.2-2 0-3.3-1-4-2.2l1.6-.9zM6.2 18.7c.3.6.7 1.1 1.4 1.1.7 0 1.1-.3 1.1-1.4v-7.6h2.2v7.7c0 2.3-1.3 3.3-3.3 3.3-1.7 0-2.8-.9-3.3-2l1.9-1.1z" fill="#000"/>
+    </svg>
+  ),
+  HTML: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size}>
+      <path d="M3 2l1.6 18L12 22l7.4-2L21 2H3z" fill="#E34F26"/>
+      <path d="M12 3.8v16.6l6-1.6L19.3 3.8H12z" fill="#EF652A"/>
+      <path d="M12 10.2H9.2l-.2-2.4H12V5.6H6.5l.1.6.7 7.4H12V10.2zM12 16.2l-2.5-.7-.2-1.9H7.1l.3 3.6L12 18.4v-2.2z" fill="#fff"/>
+      <path d="M12 10.2v2.4h2.6l-.2 2.6-2.4.7v2.2l4.6-1.3.4-4.6.1-1.4L17.5 5.6H12v2.4h3l-.2 2.2H12z" fill="#fff"/>
+    </svg>
+  ),
+  CSS: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size}>
+      <path d="M3 2l1.6 18L12 22l7.4-2L21 2H3z" fill="#1572B6"/>
+      <path d="M12 3.8v16.6l6-1.6L19.3 3.8H12z" fill="#33A9DC"/>
+      <path d="M12 10.6H9.3L9.1 8.4H12V6.3H6.6l.6 6.5H12v-2.2zM12 15.8l-2.4-.7-.2-2.2H7.2l.3 4L12 18v-2.2z" fill="#fff"/>
+      <path d="M12 10.6v2.2h2.4l-.2 2.3-2.2.7v2.2l4.4-1.2.6-6.2H12zM12 6.3v2.1h5.2l.1-1.1.3-1H12z" fill="#fff"/>
+    </svg>
+  ),
+  React: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size}>
+      <circle cx="12" cy="12" r="2.05" fill="#61DAFB"/>
+      <g stroke="#61DAFB" strokeWidth="1" fill="none">
+        <ellipse cx="12" cy="12" rx="10" ry="4.2"/>
+        <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/>
+        <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/>
+      </g>
+    </svg>
+  ),
+  Node: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size}>
+      <path d="M12 1.5L1.5 7.5v9L12 22.5l10.5-6v-9L12 1.5z" fill="#539E43"/>
+      <path d="M12 20.5l-8-4.6V7.1l8-4.6 8 4.6v8.8l-8 4.6zm1.2-14.2c-1.5-.6-3-.4-3.7.5-.7.9-.6 2 .3 2.6l.6.4c.3.2.4.4.2.6-.1.2-.4.2-.7 0l-1.7-1-.9 1.6 1.7 1c1.5.9 3.1.6 3.8-.3.7-.9.5-2-.4-2.6l-.6-.4c-.3-.2-.4-.4-.2-.6.1-.2.4-.2.7 0l1.7 1 .9-1.6-1.7-1z" fill="#fff"/>
+    </svg>
+  ),
+  Express: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size}>
+      <rect width="24" height="24" rx="4" fill="#000"/>
+      <text x="12" y="16" textAnchor="middle" fontSize="9" fontFamily="Arial" fontWeight="bold" fill="#fff">Ex</text>
+    </svg>
+  ),
+  PostgreSQL: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none">
+      <path d="M17.1 17.8c.5-2.3.7-4.3.5-5.9-.1-.9-.2-1.6-.3-2.2-.3-2.1-1.4-3.6-3.2-4-1.7-.3-3.3.2-4.5 1.4-.6.6-1.1 1.2-1.5 1.9-.5.9-.9 1.9-1.1 3-.2 1-.3 2-.2 3 .1.9.3 1.9.7 2.8.3.7.7 1.3 1.2 1.9.2.3.5.6.8.8.4.3.8.5 1.3.6.6.1 1.1-.1 1.5-.5.3-.3.4-.7.4-1.1l-.1-2.2c0-.6.1-1.2.4-1.7.3-.5.8-.8 1.4-.8h.1c.4 0 .8.1 1.1.3" fill="#336791"/>
+      <circle cx="8" cy="9" r="0.8" fill="#fff"/>
+    </svg>
+  ),
+  MongoDB: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none">
+      <path d="M12 1.5c-3 3.5-5 6.5-5 10 0 3.5 2 6.5 4.5 8.5l.5 2.5.5-2.5c2.5-2 4.5-5 4.5-8.5 0-3.5-2-6.5-5-10zm0 4.5c1.5 2 2.5 4 2.5 6 0 2-1 4-2.5 5.5-1.5-1.5-2.5-3.5-2.5-5.5 0-2 1-4 2.5-6z" fill="#47A248"/>
+    </svg>
+  ),
+  AI: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none">
+      <circle cx="12" cy="12" r="3" fill="var(--accent-1)"/>
+      <circle cx="5" cy="5" r="2" fill="var(--accent-3)"/><circle cx="19" cy="5" r="2" fill="var(--accent-3)"/>
+      <circle cx="5" cy="19" r="2" fill="var(--accent-3)"/><circle cx="19" cy="19" r="2" fill="var(--accent-3)"/>
+      <line x1="6" y1="6" x2="10" y2="10" stroke="var(--accent-1)" strokeWidth="1"/>
+      <line x1="18" y1="6" x2="14" y2="10" stroke="var(--accent-1)" strokeWidth="1"/>
+      <line x1="6" y1="18" x2="10" y2="14" stroke="var(--accent-1)" strokeWidth="1"/>
+      <line x1="18" y1="18" x2="14" y2="14" stroke="var(--accent-1)" strokeWidth="1"/>
+    </svg>
+  ),
+  ML: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none">
+      <polyline points="2,18 7,12 11,15 15,8 20,11 22,6" stroke="var(--accent-1)" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="7" cy="12" r="1.5" fill="var(--accent-3)"/><circle cx="15" cy="8" r="1.5" fill="var(--accent-3)"/><circle cx="22" cy="6" r="1.5" fill="var(--accent-3)"/>
+    </svg>
+  ),
+  GenAI: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none">
+      <path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5L12 2z" fill="var(--accent-1)"/>
+      <path d="M19 14l.8 2.4L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.6L19 14z" fill="var(--accent-3)"/>
+      <path d="M5 15l.6 1.8L7.5 17l-1.9.7L5 19.5l-.6-1.8L2.5 17l1.9-.2L5 15z" fill="var(--accent-3)"/>
+    </svg>
+  ),
+  Git: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size}>
+      <path d="M23.1 11.2L12.8.9a1.3 1.3 0 00-1.8 0L8.9 3l2.4 2.4a1.6 1.6 0 012 .2c.6.6.8 1.5.4 2.2l2.3 2.3c.7-.4 1.7-.2 2.2.4.6.7.6 1.8 0 2.5-.7.7-1.8.7-2.5 0-.5-.6-.7-1.4-.4-2.1l-2.2-2.2v5.7c.2.1.3.2.5.4.7.7.7 1.8 0 2.5-.7.7-1.8.7-2.5 0-.7-.7-.7-1.8 0-2.5.2-.2.4-.3.5-.4V8.8c-.2-.1-.4-.3-.5-.4-.5-.6-.7-1.4-.4-2.1L6.8 3.9.9 9.8a1.3 1.3 0 000 1.8l10.3 10.3a1.3 1.3 0 001.8 0l10.1-10.1a1.3 1.3 0 000-1.8z" fill="#F05032"/>
+    </svg>
+  ),
+  GitHub: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
+      <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.55v-2.14c-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a11 11 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.73.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.39-5.25 5.67.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
+    </svg>
+  ),
+  VSCode: ({ size = 24 }) => (
+    <svg viewBox="0 0 24 24" width={size} height={size}>
+      <path d="M17.5 2.5l-9 8.5-4.5-3.5L1 9.5l4 3-4 3 3 2 4.5-3.5 9 8.5L23 20V4L17.5 2.5zm0 5v9L12 12l5.5-4.5z" fill="#007ACC"/>
+    </svg>
+  ),
+};
+
+function getSkillIcon(name) {
+  const map = {
+    'Python': BrandIcons.Python, 'Java': BrandIcons.Java, 'JavaScript': BrandIcons.JavaScript,
+    'HTML': BrandIcons.HTML, 'CSS': BrandIcons.CSS, 'React': BrandIcons.React,
+    'Node.js': BrandIcons.Node, 'Express.js': BrandIcons.Express,
+    'PostgreSQL': BrandIcons.PostgreSQL, 'MongoDB': BrandIcons.MongoDB,
+    'Artificial Intelligence': BrandIcons.AI, 'Machine Learning': BrandIcons.ML,
+    'Generative AI': BrandIcons.GenAI, 'Git': BrandIcons.Git,
+    'GitHub': BrandIcons.GitHub, 'VS Code': BrandIcons.VSCode,
+  };
+  return map[name] || null;
+}
+function getTechIcon(tech) {
+  const map = {
+    'React': BrandIcons.React, 'Node.js': BrandIcons.Node, 'PostgreSQL': BrandIcons.PostgreSQL,
+    'AI': BrandIcons.AI, 'Python': BrandIcons.Python, 'MongoDB': BrandIcons.MongoDB,
+    'Express': BrandIcons.Express, 'JavaScript': BrandIcons.JavaScript, 'Java': BrandIcons.Java,
+    'Computer Vision': BrandIcons.AI, 'Web': BrandIcons.HTML, 'Blockchain': BrandIcons.AI, 'IPFS': BrandIcons.AI,
+  };
+  return map[tech] || null;
+}
+
+function SocialBox({ href, icon, label, size = 'md' }) {
+  const cls = `social-box ${size === 'sm' ? 'sm' : ''}`;
+  const iconSize = size === 'sm' ? 16 : 20;
+  return (
+    <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" aria-label={label} className={cls}>
+      {icon === 'github' && <H.Github size={iconSize} />}
+      {icon === 'linkedin' && <H.LinkedIn size={iconSize} />}
+      {icon === 'instagram' && <H.Instagram size={iconSize} />}
+      {icon === 'email' && <H.Mail size={iconSize} />}
+    </a>
+  );
+}
+
+/* ============================================================
+   DATA
+============================================================ */
+function generateContributionGrid() {
+  const weeks = 26, days = 7, grid = [];
+  for (let w = 0; w < weeks; w++) {
+    const week = [];
+    for (let d = 0; d < days; d++) {
+      const seed = (w * 7 + d) * 9301 + 49297;
+      const rand = (seed % 233280) / 233280;
+      let level = 0;
+      if (rand > 0.85) level = 4; else if (rand > 0.65) level = 3;
+      else if (rand > 0.45) level = 2; else if (rand > 0.25) level = 1;
+      week.push(level);
+    }
+    grid.push(week);
+  }
+  return grid;
+}
+
+const portfolio = {
+  personal: {
+    name: 'Niranjan Suresh', shortName: 'NIRANJAN S',
+    role: 'AI & Full-Stack Developer', badge: 'AI & DATA SCIENCE DEVELOPER',
+    subtitle: "I'm Niranjan Suresh — an AI & Data Science student and aspiring Full-Stack Developer building practical products with AI, modern web technologies and data.",
+    location: 'India',
+    roles: ['AI & Data Science Student', 'Full-Stack Developer', 'Problem Solver', 'Generative AI Explorer'],
+  },
+  socials: {
+    github: 'https://github.com/niranjansureshm-lab',
+    linkedin: 'https://www.linkedin.com/in/niranjan-suresh-m',
+    instagram: 'https://www.instagram.com/_____.niranjan_____',
+    email: 'niranjan.suresh.m@gmail.com',
+  },
+  stats: [
+    { label: 'AI & DS', value: 'Student', num: null, icon: 'Brain' },
+    { label: 'Full Stack', value: 'Developer', num: null, icon: 'Layers' },
+    { label: 'Projects', value: '10+', num: 10, suffix: '+', icon: 'FolderCode' },
+    { label: 'Certifications', value: 'Multiple', num: null, icon: 'Award' },
+  ],
+  about: {
+    heading: 'Turning ideas into useful products.',
+    paragraphs: [
+      "I'm Niranjan Suresh, an Artificial Intelligence & Data Science student passionate about building useful digital products. I enjoy combining software development, AI and data to turn ideas into practical applications.",
+      'Currently focused on strengthening my skills in full-stack development, AI/ML and modern web technologies while building projects that solve real-world problems.',
+    ],
+    panel: [
+      { label: 'Education', value: 'B.Tech — Artificial Intelligence & Data Science', icon: 'GraduationCap' },
+      { label: 'Focus Areas', value: 'AI • Full-Stack Development • Data', icon: 'Target' },
+      { label: 'Current Focus', value: 'Building real-world AI-powered applications', icon: 'Rocket' },
+      { label: 'Location', value: 'India', icon: 'MapPin' },
+    ],
+  },
+  focus: {
+    heading: "What I'm building toward",
+    items: [
+      { number: '01', title: 'AI Engineering', description: 'Building practical AI-powered applications and intelligent workflows.', icon: 'Brain' },
+      { number: '02', title: 'Full-Stack Development', description: 'Creating modern, responsive and scalable web applications.', icon: 'Layers' },
+      { number: '03', title: 'Problem Solving', description: 'Turning real-world problems into useful software solutions.', icon: 'Lightbulb' },
+    ],
+  },
+  skills: {
+    heading: 'Tools I build with.',
+    categories: [
+      { name: 'Languages', icon: 'Code2', skills: [
+        { name: 'Python', description: 'Scripting, AI/ML and backend logic.', level: 90 },
+        { name: 'Java', description: 'Object-oriented programming and DSA.', level: 75 },
+        { name: 'JavaScript', description: 'Modern web and full-stack development.', level: 85 },
+      ]},
+      { name: 'Frontend', icon: 'Monitor', skills: [
+        { name: 'HTML', description: 'Semantic, accessible markup.', level: 95 },
+        { name: 'CSS', description: 'Responsive layouts and modern UI.', level: 88 },
+        { name: 'React', description: 'Component-driven interactive UIs.', level: 85 },
+      ]},
+      { name: 'Backend', icon: 'Server', skills: [
+        { name: 'Node.js', description: 'Scalable server-side JavaScript.', level: 80 },
+        { name: 'Express.js', description: 'REST APIs and web services.', level: 78 },
+      ]},
+      { name: 'Database', icon: 'Database', skills: [
+        { name: 'PostgreSQL', description: 'Relational data modelling.', level: 75 },
+        { name: 'MongoDB', description: 'Flexible NoSQL document storage.', level: 78 },
+      ]},
+      { name: 'AI / Data', icon: 'Brain', skills: [
+        { name: 'Artificial Intelligence', description: 'Intelligent system design.', level: 80 },
+        { name: 'Machine Learning', description: 'Model training and evaluation.', level: 75 },
+        { name: 'Generative AI', description: 'LLMs and AI-powered workflows.', level: 78 },
+      ]},
+      { name: 'Tools', icon: 'Wrench', skills: [
+        { name: 'Git', description: 'Version control and collaboration.', level: 88 },
+        { name: 'GitHub', description: 'Code hosting and CI workflows.', level: 88 },
+        { name: 'VS Code', description: 'Primary development environment.', level: 95 },
+      ]},
+    ],
+  },
+  projects: {
+    heading: 'Selected work.',
+    subtitle: 'Projects where AI, software and problem-solving come together.',
+    filters: ['All', 'AI', 'Full Stack', 'Web', 'Hackathon'],
+    items: [
+      { id: 'careerai', name: 'CareerAI', category: 'AI + Full Stack', filterTags: ['AI', 'Full Stack'],
+        icon: 'Briefcase',
+        description: 'An AI-powered placement preparation platform designed to help students prepare for careers through personalized career tools, resume analysis, skill-gap identification, mock interviews and job opportunities.',
+        tech: ['React', 'Node.js', 'PostgreSQL', 'AI'],
+        links: { github: 'https://github.com/niranjansureshm-lab' },
+        detail: {
+          problem: 'Students often lack structured, personalised guidance when preparing for placements.',
+          solution: 'A unified AI-powered platform that analyses resumes, identifies skill gaps, generates mock interviews and surfaces job opportunities.',
+          features: ['AI resume analysis and feedback', 'Skill-gap identification', 'Mock interview practice', 'Personalised career tools', 'Curated job opportunities'],
+          contribution: 'Designed and built the full-stack application, integrated AI-powered features and developed the responsive frontend.',
+        },
+      },
+      { id: 'fallguard', name: 'FallGuard AI', category: 'AI + Safety', filterTags: ['AI'],
+        icon: 'ShieldAlert',
+        description: 'An AI-based human fall and accident detection concept designed to detect critical events and trigger appropriate emergency alerts.',
+        tech: ['AI', 'Computer Vision', 'React', 'Node.js'],
+        links: { github: 'https://github.com/niranjansureshm-lab' },
+        detail: {
+          problem: 'Elderly and at-risk individuals may suffer falls without timely help.',
+          solution: 'A computer-vision based system that detects falls and accidents in real time and triggers emergency alerts.',
+          features: ['Real-time fall detection', 'Accident event recognition', 'Automated emergency alerts', 'Dashboard for monitoring'],
+          contribution: 'Worked on the AI detection pipeline, alert logic and the React-based monitoring interface.',
+        },
+      },
+      { id: 'study-assistant', name: 'AI Study Assistant', category: 'Generative AI', filterTags: ['AI', 'Web'],
+        icon: 'GraduationCap',
+        description: 'An AI-powered study assistant concept designed to help students learn, organize information and prepare more effectively.',
+        tech: ['AI', 'Python', 'Web'],
+        links: { github: 'https://github.com/niranjansureshm-lab' },
+        detail: {
+          problem: 'Students struggle to organise large volumes of study material.',
+          solution: 'A generative-AI powered assistant that summarises, organises and helps students learn more effectively.',
+          features: ['AI-powered summarisation', 'Study material organisation', 'Concept explanations', 'Preparation assistance'],
+          contribution: 'Built the AI workflow and the web-based interface for interacting with study material.',
+        },
+      },
+      { id: 'secure-docs', name: 'Secure Digital Document Management', category: 'Smart India Hackathon', filterTags: ['Full Stack', 'Hackathon', 'Web'],
+        icon: 'Lock',
+        description: 'A secure digital document management concept for legal and investigation documents using role-based access, cryptographic verification and decentralized storage concepts.',
+        tech: ['React', 'Node.js', 'Blockchain', 'IPFS'],
+        links: { github: 'https://github.com/niranjansureshm-lab' },
+        detail: {
+          problem: 'Legal and investigation documents require tamper-proof storage.',
+          solution: 'A secure document management concept combining role-based access, cryptographic verification and decentralised storage.',
+          features: ['Role-based access control', 'Cryptographic document verification', 'Decentralised storage via IPFS concepts', 'Audit-friendly document trail'],
+          contribution: 'Contributed to the system design, frontend and integration of secure storage concepts.',
+        },
+      },
+    ],
+  },
+  experience: {
+    heading: 'Experience',
+    items: [
+      { role: 'Full Stack Development Intern', company: 'Thiranex', duration: 'July 2026 – August 2026',
+        description: 'Worked on full-stack development and gained practical experience in building modern web applications.',
+        highlights: [
+          { label: 'Frontend development', icon: 'Monitor' },
+          { label: 'Backend development', icon: 'Server' },
+          { label: 'API integration', icon: 'Plug' },
+          { label: 'Team collaboration', icon: 'Users' },
+        ],
+      },
+    ],
+  },
+  certifications: {
+    heading: 'Learning never stops.',
+    items: [
+      { name: 'Python', provider: 'NPTEL', year: '2024', icon: 'FileCode' },
+      { name: 'Generative AI', provider: 'Coursera', year: '2024', icon: 'Sparkles' },
+      { name: 'Responsive Web Design', provider: 'freeCodeCamp', year: '2023', icon: 'MonitorSmartphone' },
+      { name: 'Other Certifications', provider: 'Various', year: '—', icon: 'Award' },
+    ],
+  },
+  testimonials: {
+    heading: 'Kind words.', subtitle: 'Feedback from peers, teammates and mentors.',
+    items: [
+      { quote: 'Niranjan brings a rare combination of AI curiosity and full-stack execution. He ships real, working products.', author: 'Peer', role: 'Collaborator' },
+      { quote: 'One of the most consistent learners I have worked with — always building, always improving.', author: 'Mentor', role: 'Mentor' },
+      { quote: 'Reliable teammate. Communicates clearly and gets the work done on time.', author: 'Project Partner', role: 'Teammate' },
+    ],
+  },
+  github: {
+    heading: 'Code in the open.', subtitle: 'Building, experimenting and learning through code.',
+    username: 'niranjansureshm-lab', profileUrl: 'https://github.com/niranjansureshm-lab',
+    reposCount: '10+', contributionsPlaceholder: 'Active',
+    technologies: ['Python', 'JavaScript', 'React', 'Node.js', 'AI/ML', 'PostgreSQL'],
+    contributionGrid: generateContributionGrid(),
+  },
+  linkedin: {
+    heading: "Let's connect.",
+    text: 'Interested in technology, AI, software development and building meaningful products.',
+    url: 'https://www.linkedin.com/in/niranjan-suresh-m',
+  },
+  contact: {
+    heading: "Have an idea?\nLet's build it.",
+    subtitle: "Whether it's a project, collaboration or opportunity, I'd love to hear from you.",
+    email: 'niranjan.suresh.m@gmail.com',
+    infoItems: [
+      { icon: 'Mail', label: 'Email', value: 'niranjan.suresh.m@gmail.com' },
+      { icon: 'MapPin', label: 'Location', value: 'India' },
+      { icon: 'Clock', label: 'Response time', value: 'Usually within 24 hours' },
+    ],
+  },
+  footer: {
+    tagline: 'AI & Full-Stack Developer',
+    copyright: '© 2026 Niranjan Suresh. All rights reserved.',
+    builtWith: 'Built with React',
+  },
+  nav: [
+    { label: 'Home', href: '#home', id: 'home' },
+    { label: 'About', href: '#about', id: 'about' },
+    { label: 'Skills', href: '#skills', id: 'skills' },
+    { label: 'Projects', href: '#projects', id: 'projects' },
+    { label: 'Experience', href: '#experience', id: 'experience' },
+    { label: 'Certifications', href: '#certifications', id: 'certifications' },
+    { label: 'Contact', href: '#contact', id: 'contact' },
+  ],
+  chatbot: {
+    qa: [
+      { q: 'skills', a: "Niranjan works with Python, Java, JavaScript, React, Node.js, PostgreSQL, MongoDB and AI/ML technologies." },
+      { q: 'project', a: "Key projects: CareerAI, FallGuard AI, AI Study Assistant and Secure Digital Document Management." },
+      { q: 'contact', a: "You can reach out via the contact form, or email at niranjan.suresh.m@gmail.com." },
+      { q: 'experience', a: "Full Stack Development Intern at Thiranex (July–August 2026)." },
+      { q: 'education', a: "B.Tech in Artificial Intelligence & Data Science." },
+    ],
+    default: "I can tell you about Niranjan's skills, projects, experience, education or how to contact him. Just ask!",
+  },
+};
+
+/* ============================================================
+   PRELOADER
+============================================================ */
+function Preloader({ onDone }) {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const int = setInterval(() => {
+      setPct((p) => {
+        const next = Math.min(100, p + 3 + Math.random() * 6);
+        if (next >= 100) { clearInterval(int); setTimeout(() => onDone(), 400); }
+        return next;
+      });
+    }, 60);
+    return () => clearInterval(int);
+  }, [onDone]);
+  return (
+    <div className="preloader">
+      <div className="preloader-logo">{portfolio.personal.shortName}</div>
+      <div className="preloader-bar"><div style={{ width: `${pct}%` }} /></div>
+      <div className="preloader-pct">{Math.round(pct)}%</div>
+    </div>
+  );
+}
+
+function CustomCursor() {
+  const dotRef = useRef(null); const ringRef = useRef(null);
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(hover: none)').matches;
+    if (reduced || isTouch) return;
+    const dot = dotRef.current, ring = ringRef.current;
+    if (!dot || !ring) return;
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    let rx = mx, ry = my, rafId;
+    const onMove = (e) => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; };
+    const onOver = (e) => {
+      const hoverable = e.target.closest('a, button, input, textarea, [role="button"], .group');
+      ring.classList.toggle('hover', !!hoverable);
+    };
+    const tick = () => { rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; rafId = requestAnimationFrame(tick); };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    window.addEventListener('mouseover', onOver, { passive: true });
+    tick();
+    return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseover', onOver); cancelAnimationFrame(rafId); };
+  }, []);
+  return (<><div ref={dotRef} className="custom-cursor" /><div ref={ringRef} className="custom-cursor-ring" /></>);
+}
+
+function ScrollProgress() {
+  const [w, setW] = useState(0);
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(() => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        setW(h > 0 ? (window.scrollY / h) * 100 : 0);
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return <div className="scroll-progress" style={{ width: `${w}%` }} />;
+}
+
+const ToastContext = React.createContext({ push: () => {} });
+function ToastProvider({ children }) {
+  const [toasts, setToasts] = useState([]);
+  const push = useCallback((msg, icon) => {
+    const id = Date.now() + Math.random();
+    setToasts((t) => [...t, { id, msg, icon }]);
+    setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 2600);
+  }, []);
+  return (
+    <ToastContext.Provider value={{ push }}>
+      {children}
+      {toasts.map((t) => (
+        <MDiv key={t.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="toast">
+          {t.icon && <Icon name={t.icon} size={14} />}{t.msg}
+        </MDiv>
+      ))}
+    </ToastContext.Provider>
+  );
+}
+
+const AchievementsContext = React.createContext({ unlock: () => {}, unlocked: [] });
+function AchievementsProvider({ children }) {
+  const [unlocked, setUnlocked] = useState([]);
+  const [current, setCurrent] = useState(null);
+  const unlock = useCallback((key, title, description) => {
+    setUnlocked((prev) => {
+      if (prev.includes(key)) return prev;
+      setCurrent({ key, title, description });
+      setTimeout(() => setCurrent(null), 4000);
+      return [...prev, key];
+    });
+  }, []);
+  return (
+    <AchievementsContext.Provider value={{ unlock, unlocked }}>
+      {children}
+      <AnimatePresenceC>
+        {current && (
+          <MDiv initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 50 }} className="achievement">
+            <div className="w-9 h-9 rounded-xl accent-bg flex items-center justify-center shrink-0">
+              <H.Trophy size={16} className="text-white" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold gradient-text">🏆 {current.title}</div>
+              <div className="text-[10px] text-white/60 mt-0.5">{current.description}</div>
+            </div>
+          </MDiv>
+        )}
+      </AnimatePresenceC>
+    </AchievementsContext.Provider>
+  );
+}
+
+function RippleEffect() {
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+    const handler = (e) => {
+      const el = document.createElement('div');
+      el.className = 'ripple-el';
+      el.style.left = e.clientX + 'px'; el.style.top = e.clientY + 'px';
+      el.style.width = '20px'; el.style.height = '20px';
+      el.style.transform = 'translate(-50%, -50%)';
+      document.body.appendChild(el);
+      requestAnimationFrame(() => { el.style.animation = 'ripple 0.7s ease-out forwards'; });
+      setTimeout(() => el.remove(), 800);
+    };
+    window.addEventListener('click', handler);
+    return () => window.removeEventListener('click', handler);
+  }, []);
+  return null;
+}
+
+function SectionIndicator({ active }) {
+  const scrollTo = (href) => { const el = document.querySelector(href); if (el) el.scrollIntoView({ behavior: 'smooth' }); };
+  return (
+    <div className="section-dots" aria-label="Section navigation">
+      {portfolio.nav.map((n) => (
+        <button key={n.id} onClick={() => scrollTo(n.href)}
+          className={`section-dot ${active === n.id ? 'active' : ''}`}
+          data-label={n.label} aria-label={`Scroll to ${n.label}`} />
+      ))}
+    </div>
+  );
+}
+
+function CommandPalette({ open, onClose }) {
+  const [query, setQuery] = useState('');
+  const [activeIdx, setActiveIdx] = useState(0);
+  const inputRef = useRef(null);
+  const { push } = React.useContext(ToastContext);
+
+  const commands = useMemo(() => [
+    ...portfolio.nav.map((n) => ({ id: 'nav-' + n.id, icon: 'Compass', label: n.label, action: () => { const el = document.querySelector(n.href); if (el) el.scrollIntoView({ behavior: 'smooth' }); } })),
+    { id: 'gh', icon: 'Github', label: 'Open GitHub', action: () => window.open(portfolio.socials.github, '_blank') },
+    { id: 'li', icon: 'LinkedIn', label: 'Open LinkedIn', action: () => window.open(portfolio.socials.linkedin, '_blank') },
+    { id: 'ig', icon: 'Instagram', label: 'Open Instagram', action: () => window.open(portfolio.socials.instagram, '_blank') },
+    { id: 'mail', icon: 'Mail', label: 'Copy email', action: () => { navigator.clipboard?.writeText(portfolio.socials.email); push('Email copied!', 'Check'); } },
+    { id: 'top', icon: 'ArrowUp', label: 'Scroll to top', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+    { id: 'accent', icon: 'Palette', label: 'Cycle accent color', action: () => {
+      const accents = ['purple', 'blue', 'cyan', 'pink'];
+      const cur = document.documentElement.getAttribute('data-accent') || 'purple';
+      const next = accents[(accents.indexOf(cur) + 1) % accents.length];
+      document.documentElement.setAttribute('data-accent', next);
+      push(`Accent: ${next}`, 'Palette');
+    }},
+    { id: 'share', icon: 'Share2', label: 'Share portfolio', action: () => {
+      if (navigator.share) navigator.share({ title: 'Niranjan Suresh — Portfolio', url: window.location.href });
+      else { navigator.clipboard?.writeText(window.location.href); push('Link copied!', 'Link'); }
+    }},
+  ], [push]);
+
+  const filtered = useMemo(() => {
+    if (!query.trim()) return commands;
+    const q = query.toLowerCase();
+    return commands.filter((c) => c.label.toLowerCase().includes(q));
+  }, [commands, query]);
+
+  useEffect(() => { if (open && inputRef.current) { inputRef.current.focus(); setQuery(''); setActiveIdx(0); } }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx((i) => Math.min(filtered.length - 1, i + 1)); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx((i) => Math.max(0, i - 1)); }
+      else if (e.key === 'Enter') { e.preventDefault(); const cmd = filtered[activeIdx]; if (cmd) { cmd.action(); onClose(); } }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, filtered, activeIdx, onClose]);
+
+  return (
+    <AnimatePresenceC>
+      {open && (
+        <MDiv initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="cmd-overlay" onClick={onClose}>
+          <MDiv initial={{ y: -20, scale: 0.96 }} animate={{ y: 0, scale: 1 }} exit={{ y: -20, scale: 0.96 }} transition={{ duration: 0.15 }} className="cmd-box" onClick={(e) => e.stopPropagation()}>
+            <input ref={inputRef} className="cmd-input" placeholder="Type a command or search..." value={query} onChange={(e) => { setQuery(e.target.value); setActiveIdx(0); }} />
+            <div className="cmd-list">
+              {filtered.length === 0 && <div className="px-4 py-6 text-center text-sm text-white/40">No results</div>}
+              {filtered.map((cmd, i) => (
+                <div key={cmd.id} className={`cmd-item ${i === activeIdx ? 'active' : ''}`} onClick={() => { cmd.action(); onClose(); }} onMouseEnter={() => setActiveIdx(i)}>
+                  <Icon name={cmd.icon} size={16} className="text-[color:var(--accent-1)]" />
+                  <span className="text-sm">{cmd.label}</span>
+                </div>
+              ))}
+            </div>
+          </MDiv>
+        </MDiv>
+      )}
+    </AnimatePresenceC>
+  );
+}
+
+function MagneticButton({ children, className = '', strength = 0.35, ...rest }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(hover: none)').matches;
+    if (reduced || isTouch) return;
+    const el = ref.current; if (!el) return;
+    const onMove = (e) => {
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      const dx = (e.clientX - cx) * strength, dy = (e.clientY - cy) * strength;
+      el.style.transform = `translate(${dx}px, ${dy}px)`;
+    };
+    const onLeave = () => { el.style.transform = 'translate(0, 0)'; };
+    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mouseleave', onLeave);
+    return () => { el.removeEventListener('mousemove', onMove); el.removeEventListener('mouseleave', onLeave); };
+  }, [strength]);
+  return <button ref={ref} className={`magnetic ${className}`} {...rest}>{children}</button>;
+}
+
+function TiltCard({ children, className = '', max = 8, ...rest }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(hover: none)').matches;
+    if (reduced || isTouch) return;
+    const el = ref.current; if (!el) return;
+    const onMove = (e) => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      el.style.transform = `perspective(900px) rotateX(${-(y - 0.5) * max * 2}deg) rotateY(${(x - 0.5) * max * 2}deg)`;
+    };
+    const onLeave = () => { el.style.transform = ''; };
+    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mouseleave', onLeave);
+    return () => { el.removeEventListener('mousemove', onMove); el.removeEventListener('mouseleave', onLeave); };
+  }, [max]);
+  return <div ref={ref} className={`tilt-card ${className}`} {...rest}>{children}</div>;
+}
+
+function AnimatedBackground() {
+  const orbsRef = useRef(null), particlesRef = useRef(null), gridRef = useRef(null), particlesLayerRef = useRef(null);
+
+  useEffect(() => {
+    const layer = particlesLayerRef.current; if (!layer) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const count = reduced ? 0 : isMobile ? 16 : 34;
+    layer.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('span');
+      p.className = 'ab-particle';
+      const size = 1 + Math.random() * 2.5;
+      p.style.width = size + 'px'; p.style.height = size + 'px';
+      p.style.left = Math.random() * 100 + '%'; p.style.top = Math.random() * 100 + '%';
+      p.style.setProperty('--dur', (14 + Math.random() * 18) + 's');
+      p.style.setProperty('--delay', (-Math.random() * 20) + 's');
+      p.style.setProperty('--dx', ((Math.random() - 0.5) * 60) + 'px');
+      p.style.setProperty('--dy', (-30 - Math.random() * 50) + 'px');
+      p.style.setProperty('--peak', 0.25 + Math.random() * 0.5);
+      layer.appendChild(p);
+    }
+    return () => { if (layer) layer.innerHTML = ''; };
+  }, []);
+
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(hover: none)').matches;
+    if (reduced) return;
+    const orbs = orbsRef.current, particles = particlesRef.current, grid = gridRef.current;
+    if (!orbs || !particles || !grid) return;
+    let targetX = 0, targetY = 0, currentX = 0, currentY = 0, scrollY = 0, rafId = null;
+    const render = () => {
+      currentX += (targetX - currentX) * 0.06; currentY += (targetY - currentY) * 0.06;
+      orbs.style.transform = `translate3d(${currentX * 14}px, ${currentY * 14 + scrollY * -0.06}px, 0)`;
+      particles.style.transform = `translate3d(${currentX * 8}px, ${currentY * 8 + scrollY * -0.10}px, 0)`;
+      grid.style.transform = `translate3d(${currentX * 4}px, ${currentY * 4 + scrollY * -0.03}px, 0)`;
+      if (Math.abs(targetX - currentX) > 0.001 || Math.abs(targetY - currentY) > 0.001) rafId = requestAnimationFrame(render);
+      else rafId = null;
+    };
+    const kick = () => { if (!rafId) rafId = requestAnimationFrame(render); };
+    const onMouse = (e) => { targetX = (e.clientX / window.innerWidth) * 2 - 1; targetY = (e.clientY / window.innerHeight) * 2 - 1; kick(); };
+    const onScroll = () => { scrollY = window.scrollY || 0; kick(); };
+    if (!isTouch) window.addEventListener('mousemove', onMouse, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      if (!isTouch) window.removeEventListener('mousemove', onMouse);
+      window.removeEventListener('scroll', onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  return (
+    <div className="ab-root" aria-hidden="true">
+      <div className="ab-base" />
+      <div className="ab-orbs-layer" ref={orbsRef}>
+        <div className="ab-orb ab-orb-1" /><div className="ab-orb ab-orb-2" />
+        <div className="ab-orb ab-orb-3" /><div className="ab-orb ab-orb-4" />
+        <div className="ab-orb ab-orb-5" /><div className="ab-orb ab-orb-6" />
+        <div className="ab-hero-glow" />
+      </div>
+      <div className="ab-light" />
+      <div className="ab-particles" ref={particlesRef}>
+        <div ref={particlesLayerRef} style={{ position: 'absolute', inset: 0 }} />
+      </div>
+      <div className="ab-grid" ref={gridRef} />
+      <div className="ab-noise" /><div className="ab-vignette" />
+    </div>
+  );
+}
+
+function PhotoAvatar() {
+  const photoRef = useRef(null);
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(hover: none)').matches;
+    if (reduced || isTouch) return;
+    const wrap = photoRef.current; if (!wrap) return;
+    const stage = wrap.closest('.photo-avatar-stage');
+    if (!stage) return;
+    const onMove = (e) => {
+      const r = stage.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      const dx = (e.clientX - cx) / r.width, dy = (e.clientY - cy) / r.height;
+      const rotY = Math.max(-12, Math.min(12, dx * 18));
+      const rotX = Math.max(-8, Math.min(8, -dy * 12));
+      wrap.style.transform = `translate(-50%, -50%) rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => window.removeEventListener('mousemove', onMove);
+  }, []);
+
+  return (
+    <div className="photo-avatar-stage" aria-hidden="true">
+      <div className="avatar-platform" />
+      <div className="avatar-ring" />
+      <div className="avatar-ring-2" />
+      <div className="avatar-glow" />
+      <div className="avatar-photo-wrap" ref={photoRef}>
+        <img src={AVATAR_PHOTO_URL} alt="Niranjan Suresh" className="avatar-photo" loading="eager" />
+        <div className="avatar-scan" />
+        <div className="avatar-grid-overlay" />
+      </div>
+      <div className="corner-bracket corner-tl" />
+      <div className="corner-bracket corner-tr" />
+      <div className="corner-bracket corner-bl" />
+      <div className="corner-bracket corner-br" />
+      <div className="hud-chip hud-1"><span className="dot" /> NEURAL LINK</div>
+      <div className="hud-chip hud-2"><span className="dot" /> AI CORE</div>
+      <div className="hud-chip hud-3"><span className="dot" /> SYSTEM ONLINE</div>
+      <div className="hud-chip hud-4"><span className="dot" /> v2.0</div>
+    </div>
+  );
+}
+
+function Typewriter({ words, speed = 70, pause = 1400 }) {
+  const [text, setText] = useState(''); const [idx, setIdx] = useState(0); const [del, setDel] = useState(false);
+  useEffect(() => {
+    const current = words[idx % words.length];
+    let t;
+    if (!del && text === current) t = setTimeout(() => setDel(true), pause);
+    else if (del && text === '') { setDel(false); setIdx((i) => i + 1); }
+    else t = setTimeout(() => { setText(del ? current.slice(0, text.length - 1) : current.slice(0, text.length + 1)); }, del ? speed / 2 : speed);
+    return () => clearTimeout(t);
+  }, [text, del, idx, words, speed, pause]);
+  return <span className="gradient-text">{text}<span className="typewriter-cursor" /></span>;
+}
+
+function Counter({ to, suffix = '', duration = 1400 }) {
+  const [n, setN] = useState(0); const ref = useRef(null); const started = useRef(false);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const tick = (now) => {
+            const p = Math.min(1, (now - start) / duration);
+            setN(Math.round(to * (1 - Math.pow(1 - p, 3))));
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      });
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [to, duration]);
+  return <span ref={ref}>{n}{suffix}</span>;
+}
+
+function SnakeGame({ onClose }) {
+  const SIZE = 15;
+  const [snake, setSnake] = useState([{ x: 7, y: 7 }]);
+  const [food, setFood] = useState({ x: 10, y: 7 });
+  const [dir, setDir] = useState({ x: 1, y: 0 });
+  const [alive, setAlive] = useState(true);
+  const [score, setScore] = useState(0);
+  const { push } = React.useContext(ToastContext);
+  const { unlock } = React.useContext(AchievementsContext);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'].includes(e.key)) {
+        e.preventDefault();
+        const k = e.key;
+        setDir((d) => {
+          if ((k === 'ArrowUp' || k === 'w') && d.y === 0) return { x: 0, y: -1 };
+          if ((k === 'ArrowDown' || k === 's') && d.y === 0) return { x: 0, y: 1 };
+          if ((k === 'ArrowLeft' || k === 'a') && d.x === 0) return { x: -1, y: 0 };
+          if ((k === 'ArrowRight' || k === 'd') && d.x === 0) return { x: 1, y: 0 };
+          return d;
+        });
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  useEffect(() => {
+    if (!alive) return;
+    const int = setInterval(() => {
+      setSnake((s) => {
+        const head = { x: s[0].x + dir.x, y: s[0].y + dir.y };
+        if (head.x < 0 || head.x >= SIZE || head.y < 0 || head.y >= SIZE) { setAlive(false); return s; }
+        if (s.some((seg) => seg.x === head.x && seg.y === head.y)) { setAlive(false); return s; }
+        const newSnake = [head, ...s];
+        if (head.x === food.x && head.y === food.y) {
+          setScore((sc) => sc + 1);
+          setFood({ x: Math.floor(Math.random() * SIZE), y: Math.floor(Math.random() * SIZE) });
+        } else newSnake.pop();
+        return newSnake;
+      });
+    }, 130);
+    return () => clearInterval(int);
+  }, [dir, food, alive]);
+
+  useEffect(() => {
+    if (!alive && score >= 3) { push(`Score: ${score}`, 'Trophy'); unlock('snake', 'Snake Master', `You scored ${score} points!`); }
+  }, [alive, score, push, unlock]);
+
+  const cells = [];
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      const isSnake = snake.some((s) => s.x === x && s.y === y);
+      const isHead = snake[0].x === x && snake[0].y === y;
+      const isFood = food.x === x && food.y === y;
+      let cls = 'snake-cell';
+      if (isFood) cls += ' food';
+      else if (isSnake) cls += ' snake';
+      cells.push(<div key={`${x}-${y}`} className={cls} style={isHead ? { background: 'var(--accent-3)' } : {}} />);
+    }
+  }
+
+  return (
+    <MDiv initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="cmd-overlay" onClick={onClose}>
+      <MDiv initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} onClick={(e) => e.stopPropagation()} className="cmd-box" style={{ maxWidth: 440, padding: 24 }}>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <div className="text-sm font-semibold gradient-text">🐍 Snake Easter Egg</div>
+            <div className="text-[10px] text-white/40 mt-0.5">Arrow keys or WASD</div>
+          </div>
+          <button onClick={onClose} className="text-white/60 hover:text-white"><H.X size={16} /></button>
+        </div>
+        <div className="snake-grid" style={{ gridTemplateColumns: `repeat(${SIZE}, 1fr)` }}>{cells}</div>
+        <div className="mt-4 flex items-center justify-between text-xs text-white/60">
+          <span>Score: <span className="gradient-text font-bold">{score}</span></span>
+          {!alive && (
+            <button onClick={() => { setSnake([{ x: 7, y: 7 }]); setFood({ x: 10, y: 7 }); setDir({ x: 1, y: 0 }); setAlive(true); setScore(0); }} className="px-3 py-1 rounded-full accent-bg text-white text-xs">
+              Play again
+            </button>
+          )}
+        </div>
+      </MDiv>
+    </MDiv>
+  );
+}
+
+function Navbar({ onOpenPalette }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState('#home');
+  const [logoClicks, setLogoClicks] = useState(0);
+  const [showSnake, setShowSnake] = useState(false);
+  const { push } = React.useContext(ToastContext);
+  const { unlock } = React.useContext(AchievementsContext);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = portfolio.nav.map((n) => document.querySelector(n.href)).filter(Boolean);
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) setActive('#' + e.target.id); }), { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, []);
+
+  const handleNav = (href) => { setOpen(false); const el = document.querySelector(href); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    const next = logoClicks + 1;
+    setLogoClicks(next);
+    if (next === 5) { setShowSnake(true); setLogoClicks(0); push('🐍 Snake unlocked!', 'Trophy'); unlock('snake-open', 'Snake Hunter', 'You found the hidden game!'); }
+    else handleNav('#home');
+  };
+
+  return (
+    <>
+      <MHeader initial={{ y: -80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6, ease: 'easeOut' }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black/60 backdrop-blur-xl border-b border-white/[0.08]' : 'bg-transparent border-b border-transparent'}`}>
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8 py-4">
+          <a href="#home" onClick={handleLogoClick} className="text-sm sm:text-base font-bold tracking-[0.2em] text-white hover:text-[color:var(--accent-1)] transition-colors select-none">
+            {portfolio.personal.shortName}
+          </a>
+          <ul className="hidden lg:flex items-center gap-1">
+            {portfolio.nav.map((item) => {
+              const isActive = active === item.href;
+              return (
+                <li key={item.href} className="relative">
+                  <a href={item.href} onClick={(e) => { e.preventDefault(); handleNav(item.href); }}
+                    className={`relative px-4 py-2 text-sm font-medium transition-colors rounded-full ${isActive ? 'text-white' : 'text-white/60 hover:text-white'}`}>
+                    {isActive && (<MSpan layoutId="nav-active" className="absolute inset-0 rounded-full bg-white/[0.06] border border-white/[0.08]" transition={{ type: 'spring', stiffness: 350, damping: 30 }} />)}
+                    <span className="relative z-10">{item.label}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="flex items-center gap-2">
+            <button onClick={onOpenPalette} className="hidden md:flex items-center gap-2 h-10 px-3 rounded-xl border border-white/[0.08] bg-white/[0.03] text-white/60 hover:text-white hover:border-[color:var(--accent-1)] transition-all text-xs">
+              <H.Search size={14} />
+              <kbd className="px-1.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-[10px]">⌘K</kbd>
+            </button>
+            <SocialBox href={portfolio.socials.github} icon="github" label="GitHub" size="sm" />
+            <SocialBox href={portfolio.socials.linkedin} icon="linkedin" label="LinkedIn" size="sm" />
+            <button onClick={() => setOpen((v) => !v)} className="lg:hidden flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-white">
+              {open ? <H.X size={18} /> : <H.Menu size={18} />}
+            </button>
+          </div>
+        </nav>
+        <AnimatePresenceC>
+          {open && (
+            <MDiv initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}
+              className="lg:hidden overflow-hidden border-t border-white/[0.08] bg-black/80 backdrop-blur-xl">
+              <ul className="flex flex-col px-5 py-4 gap-1">
+                {portfolio.nav.map((item) => (
+                  <li key={item.href}>
+                    <a href={item.href} onClick={(e) => { e.preventDefault(); handleNav(item.href); }}
+                      className="block rounded-xl px-4 py-3 text-sm font-medium text-white/70 hover:text-white hover:bg-white/[0.05] transition-colors">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+                <li className="mt-3 flex gap-2 px-1 justify-center">
+                  <SocialBox href={portfolio.socials.github} icon="github" label="GitHub" />
+                  <SocialBox href={portfolio.socials.linkedin} icon="linkedin" label="LinkedIn" />
+                  <SocialBox href={portfolio.socials.instagram} icon="instagram" label="Instagram" />
+                  <SocialBox href={`mailto:${portfolio.socials.email}`} icon="email" label="Email" />
+                </li>
+              </ul>
+            </MDiv>
+          )}
+        </AnimatePresenceC>
+      </MHeader>
+      <AnimatePresenceC>{showSnake && <SnakeGame onClose={() => setShowSnake(false)} />}</AnimatePresenceC>
+    </>
+  );
+}
+
+const heroContainer = { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } };
+const heroItem = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } };
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 5) return 'Good night';
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  if (h < 21) return 'Good evening';
+  return 'Good night';
+}
+
+function Hero() {
+  const scrollTo = (sel) => { const el = document.querySelector(sel); if (el) el.scrollIntoView({ behavior: 'smooth' }); };
+  const greeting = useMemo(getGreeting, []);
+  return (
+    <section id="home" className="relative flex min-h-screen items-center pt-28 pb-16 sm:pt-32">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-5 sm:px-8 lg:grid-cols-2 lg:gap-8">
+        <MDiv variants={heroContainer} initial="hidden" animate="show">
+          <MDiv variants={heroItem} className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-1.5 text-[11px] font-medium tracking-[0.18em] text-white/70 backdrop-blur-xl">
+              <H.Sparkles size={12} className="text-[color:var(--accent-1)]" />
+              {portfolio.personal.badge}
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-500/[0.06] px-3 py-1.5 text-[10px] font-medium text-emerald-300/90">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              {greeting}, welcome!
+            </span>
+          </MDiv>
+          <MH1 variants={heroItem} className="mt-6 text-[42px] leading-[1.05] font-bold tracking-tight sm:text-6xl lg:text-[72px] xl:text-[80px]">
+            Building <span className="gradient-text">Intelligent</span><br />Digital Experiences.
+          </MH1>
+          <MDiv variants={heroItem} className="mt-4 flex items-center gap-2 text-sm sm:text-base text-white/50 font-mono">
+            <span className="text-white/30">&gt;</span>
+            <Typewriter words={portfolio.personal.roles} />
+          </MDiv>
+          <MP variants={heroItem} className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-white/60">
+            {portfolio.personal.subtitle}
+          </MP>
+          <MDiv variants={heroItem} className="mt-8 flex flex-wrap items-center gap-3">
+            <MagneticButton onClick={() => scrollTo('#projects')} strength={0.25}
+              className="group inline-flex items-center gap-2 rounded-full accent-bg px-6 py-3 text-sm font-semibold text-white shadow-[0_0_30px_-8px_var(--accent-2)]">
+              View My Work <H.ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            </MagneticButton>
+            <MagneticButton onClick={() => { navigator.clipboard?.writeText(window.location.href); }} strength={0.25}
+              className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.03] px-6 py-3 text-sm font-semibold text-white/90 backdrop-blur-xl hover:border-[color:var(--accent-1)]">
+              <H.Share2 size={16} /> Share
+            </MagneticButton>
+          </MDiv>
+          <MDiv variants={heroItem} className="mt-8 flex items-center gap-3">
+            <SocialBox href={portfolio.socials.github} icon="github" label="GitHub" />
+            <SocialBox href={portfolio.socials.linkedin} icon="linkedin" label="LinkedIn" />
+            <SocialBox href={portfolio.socials.instagram} icon="instagram" label="Instagram" />
+            <SocialBox href={`mailto:${portfolio.socials.email}`} icon="email" label="Email" />
+          </MDiv>
+        </MDiv>
+        <MDiv initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}>
+          <PhotoAvatar />
+        </MDiv>
+      </div>
+    </section>
+  );
+}
+
+function HeroStats() {
+  return (
+    <section className="relative mx-auto max-w-7xl px-5 sm:px-8 pb-12">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 rounded-3xl glass p-2">
+        {portfolio.stats.map((s, i) => (
+          <MDiv key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.05 }}
+            className="rounded-2xl px-4 py-5 text-center hover:bg-white/[0.03] transition-colors">
+            <div className="flex justify-center mb-2">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.08] text-[color:var(--accent-1)]"
+                style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 20%, transparent), color-mix(in srgb, var(--accent-4) 20%, transparent))' }}>
+                <Icon name={s.icon} size={15} />
+              </div>
+            </div>
+            <div className="text-[11px] tracking-[0.2em] text-white/40 uppercase">{s.label}</div>
+            <div className="mt-1 text-base sm:text-lg font-semibold gradient-text">
+              {s.num !== null ? <Counter to={s.num} suffix={s.suffix || ''} /> : s.value}
+            </div>
+          </MDiv>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function TechMarquee() {
+  const list = ['Python', 'Java', 'JavaScript', 'React', 'Node.js', 'Express', 'PostgreSQL', 'MongoDB', 'AI', 'ML', 'Generative AI', 'Git', 'GitHub', 'VS Code'];
+  const doubled = [...list, ...list];
+  return (
+    <section className="relative mx-auto max-w-7xl px-5 sm:px-8 py-10">
+      <div className="rounded-3xl glass py-5 overflow-hidden relative">
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black to-transparent z-10" />
+        <div className="marquee-track">
+          {doubled.map((t, i) => (
+            <span key={i} className="text-sm sm:text-base text-white/50 whitespace-nowrap font-mono tracking-wider">
+              <span className="text-[color:var(--accent-1)]">◆</span> {t}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SectionHeading({ children, subtitle }) {
+  return (
+    <div className="mb-12 max-w-3xl">
+      <MDiv initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+        <h2 className="text-3xl sm:text-4xl lg:text-[48px] font-bold tracking-tight leading-tight">{children}</h2>
+        {subtitle && <p className="mt-4 text-white/50 text-base sm:text-lg">{subtitle}</p>}
+      </MDiv>
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <section id="about" className="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 sm:py-32 scroll-mt-24">
+      <SectionHeading>{portfolio.about.heading}</SectionHeading>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
+        <MDiv initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="space-y-5">
+          {portfolio.about.paragraphs.map((p, i) => (<p key={i} className="text-white/70 text-base sm:text-lg leading-relaxed">{p}</p>))}
+        </MDiv>
+        <MDiv initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.1 }} className="rounded-3xl glass p-6 sm:p-8">
+          <div className="space-y-5">
+            {portfolio.about.panel.map((row, i) => (
+              <div key={i} className={`flex items-start gap-4 ${i < portfolio.about.panel.length - 1 ? 'border-b border-white/[0.06] pb-5' : ''}`}>
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] text-[color:var(--accent-1)]"
+                  style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 18%, transparent), color-mix(in srgb, var(--accent-4) 18%, transparent))' }}>
+                  <Icon name={row.icon} size={16} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[11px] tracking-[0.2em] text-white/40 uppercase">{row.label}</div>
+                  <div className="mt-1.5 text-white/90 text-sm sm:text-base">{row.value}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </MDiv>
+      </div>
+    </section>
+  );
+}
+
+function Focus() {
+  return (
+    <section className="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 sm:py-32">
+      <SectionHeading>{portfolio.focus.heading}</SectionHeading>
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        {portfolio.focus.items.map((item, i) => (
+          <TiltCard key={i} max={6} className="group relative rounded-3xl glass p-7 transition-all hover:border-[color:var(--accent-1)]">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/[0.08] text-[color:var(--accent-1)] transition-transform group-hover:rotate-6"
+                style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 22%, transparent), color-mix(in srgb, var(--accent-4) 22%, transparent))' }}>
+                <Icon name={item.icon} size={22} />
+              </div>
+              <div className="text-4xl font-bold text-white/[0.06] group-hover:text-[color:var(--accent-1)] transition-colors">{item.number}</div>
+            </div>
+            <h3 className="text-xl font-semibold">{item.title}</h3>
+            <p className="mt-3 text-white/50 text-sm leading-relaxed">{item.description}</p>
+          </TiltCard>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Skills() {
+  return (
+    <section id="skills" className="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 sm:py-32 scroll-mt-24">
+      <SectionHeading>{portfolio.skills.heading}</SectionHeading>
+      <div className="space-y-12">
+        {portfolio.skills.categories.map((cat, ci) => (
+          <div key={ci}>
+            <MDiv initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="mb-5 flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-[color:var(--accent-1)]">
+                <Icon name={cat.icon} size={14} />
+              </div>
+              <h3 className="text-sm tracking-[0.2em] text-white/50 uppercase">{cat.name}</h3>
+              <span className="flex-1 h-px bg-gradient-to-r from-[color:var(--accent-1)]/40 to-transparent" />
+            </MDiv>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {cat.skills.map((skill, si) => {
+                const SkillIcon = getSkillIcon(skill.name);
+                return (
+                  <MDiv key={si} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: si * 0.05 }} whileHover={{ y: -4 }}
+                    className="group rounded-2xl glass p-5 hover:border-[color:var(--accent-1)] transition-colors">
+                    <div className="flex items-start gap-3">
+                      <div className="skill-icon-box" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.06))' }}>
+                        {SkillIcon ? <SkillIcon size={24} /> : <H.Code2 size={18} className="text-[color:var(--accent-1)]" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-white/95">{skill.name}</div>
+                        <div className="mt-1 text-xs text-white/45 leading-relaxed">{skill.description}</div>
+                        <div className="mt-3 skill-bar-track">
+                          <MDiv className="skill-bar-fill" initial={{ width: 0 }} whileInView={{ width: `${skill.level}%` }} viewport={{ once: true }} transition={{ duration: 1.2, delay: 0.1 + si * 0.05 }} />
+                        </div>
+                      </div>
+                    </div>
+                  </MDiv>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Projects({ onOpen }) {
+  const [filter, setFilter] = useState('All');
+  const filtered = filter === 'All' ? portfolio.projects.items : portfolio.projects.items.filter((p) => p.filterTags.includes(filter));
+  return (
+    <section id="projects" className="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 sm:py-32 scroll-mt-24">
+      <SectionHeading subtitle={portfolio.projects.subtitle}>{portfolio.projects.heading}</SectionHeading>
+      <div className="mb-10 flex flex-wrap gap-2">
+        {portfolio.projects.filters.map((f) => (
+          <button key={f} onClick={() => setFilter(f)}
+            className={`rounded-full px-4 py-2 text-xs sm:text-sm font-medium border transition-all ${filter === f ? 'accent-bg border-transparent text-white' : 'border-white/[0.1] bg-white/[0.02] text-white/60 hover:text-white hover:border-[color:var(--accent-1)]'}`}>
+            {f}
+          </button>
+        ))}
+      </div>
+      <MDiv layout className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <AnimatePresenceC>
+          {filtered.map((p, i) => (
+            <MDiv key={p.id} layout initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5, delay: i * 0.05 }}>
+              <ProjectCard project={p} onOpen={() => onOpen(p)} />
+            </MDiv>
+          ))}
+        </AnimatePresenceC>
+      </MDiv>
+    </section>
+  );
+}
+
+function ProjectCard({ project, onOpen }) {
+  return (
+    <TiltCard max={5} className="group relative h-full cursor-pointer rounded-3xl glass p-6 sm:p-7 transition-all hover:border-[color:var(--accent-1)] hover:shadow-[0_0_60px_-20px_var(--accent-2)] overflow-hidden">
+      <div onClick={onOpen}>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/[0.08] text-[color:var(--accent-1)] transition-transform group-hover:scale-110"
+              style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 20%, transparent), color-mix(in srgb, var(--accent-4) 20%, transparent))' }}>
+              <Icon name={project.icon} size={22} />
+            </div>
+            <div>
+              <div className="text-[11px] tracking-[0.2em] text-[color:var(--accent-1)] uppercase">{project.category}</div>
+              <h3 className="mt-2 text-xl sm:text-2xl font-semibold">{project.name}</h3>
+            </div>
+          </div>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.03] text-white/60 group-hover:text-[color:var(--accent-1)] group-hover:border-[color:var(--accent-1)] transition-all">
+            <H.ArrowUpRight size={16} />
+          </div>
+        </div>
+        <p className="mt-4 text-sm text-white/55 leading-relaxed line-clamp-3">{project.description}</p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {project.tech.map((t, i) => {
+            const TI = getTechIcon(t);
+            return (
+              <span key={i} className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-[11px] text-white/70">
+                {TI ? <TI size={12} /> : <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent-1)]" />}{t}
+              </span>
+            );
+          })}
+        </div>
+        <div className="mt-6 flex items-center gap-4 text-xs text-white/40">
+          <span className="inline-flex items-center gap-1"><H.MousePointerClick size={12} /> Click to view details</span>
+        </div>
+      </div>
+    </TiltCard>
+  );
+}
+
+function ProjectModal({ project, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+  }, [onClose]);
+  const d = project.detail || {};
+  return (
+    <MDiv initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md" onClick={onClose}>
+      <MDiv initial={{ opacity: 0, y: 40, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.97 }} transition={{ duration: 0.35 }} onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-3xl glass-strong p-6 sm:p-8">
+        <button onClick={onClose} className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.03] text-white/70 hover:text-white">
+          <H.X size={16} />
+        </button>
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl accent-bg text-white">
+            <Icon name={project.icon} size={22} />
+          </div>
+          <div>
+            <div className="text-[11px] tracking-[0.2em] text-[color:var(--accent-1)] uppercase">{project.category}</div>
+            <h3 className="text-2xl sm:text-3xl font-bold">{project.name}</h3>
+          </div>
+        </div>
+        <div className="mt-6 space-y-6 text-sm">
+          {d.problem && (<div><div className="text-[11px] tracking-[0.2em] text-white/40 uppercase mb-2">Problem</div><p className="text-white/70 leading-relaxed">{d.problem}</p></div>)}
+          {d.solution && (<div><div className="text-[11px] tracking-[0.2em] text-white/40 uppercase mb-2">Solution</div><p className="text-white/70 leading-relaxed">{d.solution}</p></div>)}
+          {d.features && (<div><div className="text-[11px] tracking-[0.2em] text-white/40 uppercase mb-2">Features</div>
+            <ul className="space-y-1.5">{d.features.map((f, i) => (<li key={i} className="flex items-start gap-2 text-white/70"><span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[color:var(--accent-1)] shrink-0" /><span>{f}</span></li>))}</ul>
+          </div>)}
+          <div>
+            <div className="text-[11px] tracking-[0.2em] text-white/40 uppercase mb-2">Technology</div>
+            <div className="flex flex-wrap gap-2">{project.tech.map((t, i) => {
+              const TI = getTechIcon(t);
+              return (<span key={i} className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-[11px] text-white/70">{TI ? <TI size={12} /> : <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--accent-1)]" />}{t}</span>);
+            })}</div>
+          </div>
+          {d.contribution && (<div><div className="text-[11px] tracking-[0.2em] text-white/40 uppercase mb-2">My Contribution</div><p className="text-white/70 leading-relaxed">{d.contribution}</p></div>)}
+        </div>
+      </MDiv>
+    </MDiv>
+  );
+}
+
+function Experience() {
+  return (
+    <section id="experience" className="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 sm:py-32 scroll-mt-24">
+      <SectionHeading>{portfolio.experience.heading}</SectionHeading>
+      <div className="relative pl-6 sm:pl-10">
+        <div className="absolute left-1.5 sm:left-3 top-2 bottom-2 w-px" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--accent-1) 40%, transparent), color-mix(in srgb, var(--accent-3) 30%, transparent), transparent)' }} />
+        {portfolio.experience.items.map((exp, i) => (
+          <MDiv key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="relative">
+            <span className="absolute -left-[22px] sm:-left-[30px] top-2 h-3 w-3 rounded-full" style={{ background: 'linear-gradient(135deg, var(--accent-1), var(--accent-3))', boxShadow: '0 0 15px var(--accent-2)' }} />
+            <div className="rounded-3xl glass p-6 sm:p-7">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] text-[color:var(--accent-1)]"
+                  style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 20%, transparent), color-mix(in srgb, var(--accent-4) 20%, transparent))' }}>
+                  <H.Briefcase size={20} />
+                </div>
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="text-lg sm:text-xl font-semibold">{exp.role}</h3>
+                    <span className="text-xs text-white/50 inline-flex items-center gap-1.5"><H.Calendar size={11} />{exp.duration}</span>
+                  </div>
+                  <div className="mt-1 text-sm text-[color:var(--accent-1)] inline-flex items-center gap-1.5">
+                    <H.Building2 size={12} />{exp.company}
+                  </div>
+                  <p className="mt-4 text-sm text-white/60 leading-relaxed">{exp.description}</p>
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {exp.highlights.map((h, hi) => (
+                      <li key={hi} className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-[11px] text-white/70">
+                        <Icon name={h.icon} size={11} />{h.label}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </MDiv>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Certifications() {
+  return (
+    <section id="certifications" className="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 sm:py-32 scroll-mt-24">
+      <SectionHeading>{portfolio.certifications.heading}</SectionHeading>
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {portfolio.certifications.items.map((c, i) => (
+          <MDiv key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.07 }} whileHover={{ y: -5 }}
+            className="group rounded-3xl glass p-6 hover:border-[color:var(--accent-1)] transition-colors">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/[0.08] text-[color:var(--accent-1)] transition-transform group-hover:scale-110"
+              style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 20%, transparent), color-mix(in srgb, var(--accent-4) 20%, transparent))' }}>
+              <Icon name={c.icon} size={18} />
+            </div>
+            <h3 className="mt-5 text-base font-semibold leading-snug">{c.name}</h3>
+            <div className="mt-1 text-xs text-white/50">{c.provider} • {c.year}</div>
+          </MDiv>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Testimonials() {
+  const [idx, setIdx] = useState(0);
+  const items = portfolio.testimonials.items;
+  useEffect(() => {
+    const int = setInterval(() => setIdx((i) => (i + 1) % items.length), 5000);
+    return () => clearInterval(int);
+  }, [items.length]);
+  return (
+    <section className="relative mx-auto max-w-5xl px-5 sm:px-8 py-24 sm:py-32">
+      <SectionHeading subtitle={portfolio.testimonials.subtitle}>{portfolio.testimonials.heading}</SectionHeading>
+      <div className="relative rounded-3xl glass p-8 sm:p-12 min-h-[220px]">
+        <H.Quote size={32} className="text-[color:var(--accent-1)] opacity-40" />
+        <AnimatePresenceC mode="wait">
+          <MDiv key={idx} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.4 }} className="mt-4">
+            <p className="text-lg sm:text-xl text-white/85 leading-relaxed">{items[idx].quote}</p>
+            <div className="mt-5 flex items-center gap-3">
+              <div className="h-9 w-9 rounded-full accent-bg flex items-center justify-center text-xs font-bold">{items[idx].author.charAt(0)}</div>
+              <div>
+                <div className="text-sm font-medium">{items[idx].author}</div>
+                <div className="text-xs text-white/45">{items[idx].role}</div>
+              </div>
+            </div>
+          </MDiv>
+        </AnimatePresenceC>
+      </div>
+    </section>
+  );
+}
+
+function GithubSection() {
+  const g = portfolio.github;
+  const levelColors = ['bg-white/[0.04]', 'bg-[color:var(--accent-2)]/25', 'bg-[color:var(--accent-2)]/45', 'bg-[color:var(--accent-2)]/70', 'bg-[color:var(--accent-1)]'];
+  return (
+    <section className="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 sm:py-32">
+      <SectionHeading subtitle={g.subtitle}>{g.heading}</SectionHeading>
+      <MDiv initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="rounded-3xl glass p-6 sm:p-8">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl accent-bg text-white"><H.Github size={22} /></div>
+            <div><div className="font-semibold">@{g.username}</div><div className="text-xs text-white/50">GitHub Profile</div></div>
+          </div>
+          <a href={g.profileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.03] px-5 py-2.5 text-sm font-semibold text-white/90 hover:border-[color:var(--accent-1)]">
+            Visit GitHub <H.ArrowUpRight size={14} />
+          </a>
+        </div>
+        <div className="mt-8 overflow-x-auto">
+          <div className="flex gap-[3px] min-w-max">
+            {g.contributionGrid.map((week, wi) => (
+              <div key={wi} className="flex flex-col gap-[3px]">
+                {week.map((lv, di) => (<span key={di} className={`h-2.5 w-2.5 rounded-sm ${levelColors[lv]}`} />))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </MDiv>
+    </section>
+  );
+}
+
+function LinkedInSection() {
+  const l = portfolio.linkedin;
+  return (
+    <section className="relative mx-auto max-w-7xl px-5 sm:px-8 py-12 sm:py-16">
+      <MDiv initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="relative overflow-hidden rounded-3xl glass p-8 sm:p-10">
+        <div className="relative flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl accent-bg text-white"><H.LinkedIn size={22} /></div>
+            <div>
+              <h3 className="text-2xl sm:text-3xl font-bold">{l.heading}</h3>
+              <p className="mt-3 max-w-xl text-sm sm:text-base text-white/60">{l.text}</p>
+            </div>
+          </div>
+          <a href={l.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full accent-bg px-6 py-3 text-sm font-semibold text-white shrink-0">
+            Connect <H.ArrowUpRight size={14} />
+          </a>
+        </div>
+      </MDiv>
+    </section>
+  );
+}
+
+function Contact() {
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [errors, setErrors] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const { push } = React.useContext(ToastContext);
+  const { unlock } = React.useContext(AchievementsContext);
+
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim()) e.name = 'Please enter your name.';
+    if (!form.email.trim()) e.email = 'Please enter your email.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Please enter a valid email.';
+    if (!form.message.trim()) e.message = 'Please enter a message.';
+    else if (form.message.trim().length < 10) e.message = 'Message should be at least 10 characters.';
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const fireConfetti = () => {
+    const colors = ['#a78bfa', '#60a5fa', '#8b5cf6', '#22d3ee', '#f0abfc', '#ffffff'];
+    for (let i = 0; i < 60; i++) {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.animationDuration = (1.8 + Math.random() * 1.4) + 's';
+      el.style.animationDelay = (Math.random() * 0.4) + 's';
+      el.style.borderRadius = Math.random() > 0.5 ? '2px' : '50%';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3600);
+    }
+  };
+
+  const [sending, setSending] = useState(false);
+  const onSubmit = async (ev) => {
+    ev.preventDefault();
+    if (!validate() || sending) return;
+    setSending(true);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { push(data.error || 'Could not send message', 'X'); return; }
+      setSubmitted(true);
+      fireConfetti();
+      push('Message sent!', 'Check');
+      unlock('contact', 'Reached Out', 'You sent a message!');
+    } catch (e) {
+      push('Server not reachable. Try again.', 'X');
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const onChange = (k) => (ev) => setForm({ ...form, [k]: ev.target.value });
+
+  return (
+    <section id="contact" className="relative mx-auto max-w-5xl px-5 sm:px-8 py-24 sm:py-32 scroll-mt-24">
+      <div className="text-center">
+        <MDiv initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+          <h2 className="text-3xl sm:text-4xl lg:text-[56px] font-bold tracking-tight leading-[1.1] whitespace-pre-line">{portfolio.contact.heading}</h2>
+          <p className="mt-5 mx-auto max-w-2xl text-white/55 text-base sm:text-lg">{portfolio.contact.subtitle}</p>
+        </MDiv>
+      </div>
+
+      <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {portfolio.contact.infoItems.map((item, i) => (
+          <MDiv key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.05 }}
+            className="rounded-2xl glass p-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] text-[color:var(--accent-1)]"
+              style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 20%, transparent), color-mix(in srgb, var(--accent-4) 20%, transparent))' }}>
+              <Icon name={item.icon} size={16} />
+            </div>
+            <div className="min-w-0">
+              <div className="text-[10px] tracking-[0.2em] text-white/40 uppercase">{item.label}</div>
+              <div className="text-xs text-white/80 truncate">{item.value}</div>
+            </div>
+          </MDiv>
+        ))}
+      </div>
+
+      <MDiv initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} className="mt-6 rounded-3xl glass p-6 sm:p-8">
+        {submitted ? (
+          <div className="flex flex-col items-center justify-center py-10 text-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full accent-bg"><H.Check size={28} className="text-white" /></div>
+            <h3 className="mt-5 text-xl font-semibold">Message sent. Thank you!</h3>
+            <p className="mt-2 max-w-md text-sm text-white/55">I'll get back to you soon.</p>
+            <div className="mt-6 flex gap-3">
+              <a href={`mailto:${portfolio.contact.email}`} className="inline-flex items-center gap-2 rounded-full accent-bg px-5 py-2.5 text-sm font-semibold text-white"><H.Mail size={14} /> Email me</a>
+              <button onClick={() => { setSubmitted(false); setForm({ name: '', email: '', message: '' }); }} className="rounded-full border border-white/[0.1] bg-white/[0.03] px-5 py-2.5 text-sm font-semibold text-white/90">Send another</button>
+            </div>
+          </div>
+        ) : (
+          <form onSubmit={onSubmit} className="space-y-5" noValidate>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div>
+                <label className="mb-2 flex items-center gap-1.5 text-xs tracking-[0.15em] text-white/50 uppercase"><H.User size={12} />Name</label>
+                <input type="text" value={form.name} onChange={onChange('name')}
+                  className={`w-full rounded-xl border bg-white/[0.02] px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition-all focus:border-[color:var(--accent-1)] ${errors.name ? 'border-red-400/60' : 'border-white/[0.08]'}`} placeholder="Your name" />
+                {errors.name && <p className="mt-1.5 text-xs text-red-400">{errors.name}</p>}
+              </div>
+              <div>
+                <label className="mb-2 flex items-center gap-1.5 text-xs tracking-[0.15em] text-white/50 uppercase"><H.Mail size={12} />Email</label>
+                <input type="email" value={form.email} onChange={onChange('email')}
+                  className={`w-full rounded-xl border bg-white/[0.02] px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition-all focus:border-[color:var(--accent-1)] ${errors.email ? 'border-red-400/60' : 'border-white/[0.08]'}`} placeholder="you@example.com" />
+                {errors.email && <p className="mt-1.5 text-xs text-red-400">{errors.email}</p>}
+              </div>
+            </div>
+            <div>
+              <label className="mb-2 flex items-center gap-1.5 text-xs tracking-[0.15em] text-white/50 uppercase"><H.MessageSquare size={12} />Message</label>
+              <textarea rows="5" value={form.message} onChange={onChange('message')}
+                className={`w-full resize-none rounded-xl border bg-white/[0.02] px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition-all focus:border-[color:var(--accent-1)] ${errors.message ? 'border-red-400/60' : 'border-white/[0.08]'}`} placeholder="Tell me about your idea..." />
+              {errors.message && <p className="mt-1.5 text-xs text-red-400">{errors.message}</p>}
+            </div>
+            <button type="submit" disabled={sending} className="group inline-flex items-center gap-2 rounded-full accent-bg px-6 py-3 text-sm font-semibold text-white disabled:opacity-60">
+              {sending ? 'Sending...' : 'Send Message'} <H.Send size={14} />
+            </button>
+          </form>
+        )}
+      </MDiv>
+    </section>
+  );
+}
+
+function Chatbot() {
+  const [open, setOpen] = useState(false);
+  const [msgs, setMsgs] = useState([{ from: 'bot', text: portfolio.chatbot.default }]);
+  const [input, setInput] = useState('');
+  const [listening, setListening] = useState(false);
+  const endRef = useRef(null);
+  const { unlock } = React.useContext(AchievementsContext);
+  const { push } = React.useContext(ToastContext);
+
+  useEffect(() => { if (endRef.current) endRef.current.scrollIntoView({ behavior: 'smooth' }); }, [msgs, open]);
+
+  const respond = (text) => {
+    const low = text.toLowerCase();
+    const hit = portfolio.chatbot.qa.find((x) => low.includes(x.q));
+    return hit ? hit.a : portfolio.chatbot.default;
+  };
+
+  const send = (text) => {
+    if (!text.trim()) return;
+    setMsgs((m) => [...m, { from: 'user', text }]);
+    setInput('');
+    setTimeout(() => { setMsgs((m) => [...m, { from: 'bot', text: respond(text) }]); }, 500);
+  };
+
+  const startVoice = () => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { push('Voice not supported', 'X'); return; }
+    try {
+      const rec = new SR();
+      rec.lang = 'en-IN';
+      rec.onstart = () => setListening(true);
+      rec.onend = () => setListening(false);
+      rec.onresult = (e) => { const t = e.results[0][0].transcript; setInput(t); send(t); unlock('voice', 'Voice Explorer', 'You used voice search!'); };
+      rec.start();
+    } catch (e) { setListening(false); }
+  };
+
+  const quick = ['Skills', 'Projects', 'Experience', 'Contact'];
+  return (
+    <>
+      <AnimatePresenceC>
+        {open && (
+          <MDiv initial={{ opacity: 0, y: 20, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.96 }}
+            className="fixed right-5 bottom-40 z-40 w-[320px] max-w-[calc(100vw-40px)] rounded-3xl glass-strong overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.7)] flex flex-col"
+            style={{ height: '440px' }}>
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-white/[0.08]">
+              <div className="h-9 w-9 rounded-full accent-bg flex items-center justify-center"><H.Bot size={16} className="text-white" /></div>
+              <div className="flex-1"><div className="text-sm font-semibold">Portfolio Assistant</div><div className="text-[10px] text-emerald-400 flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Online</div></div>
+              <button onClick={() => setOpen(false)} className="text-white/50 hover:text-white"><H.X size={16} /></button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              {msgs.map((m, i) => (
+                <div key={i} className={`flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`chat-bubble ${m.from === 'user' ? 'chat-user' : 'chat-bot'}`}>{m.text}</div>
+                </div>
+              ))}
+              <div ref={endRef} />
+            </div>
+            <div className="px-3 pb-2 flex gap-1.5 flex-wrap">
+              {quick.map((q) => (
+                <button key={q} onClick={() => send(q)} className="text-[10px] rounded-full border border-white/[0.1] bg-white/[0.03] px-2.5 py-1 text-white/60 hover:text-white hover:border-[color:var(--accent-1)]">{q}</button>
+              ))}
+            </div>
+            <div className="p-3 border-t border-white/[0.08] flex gap-2">
+              <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') send(input); }} placeholder="Ask something..."
+                className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-xs text-white placeholder-white/30 outline-none focus:border-[color:var(--accent-1)]" />
+              <button onClick={startVoice} className={`h-9 w-9 rounded-xl border flex items-center justify-center transition-all ${listening ? 'accent-bg border-transparent text-white animate-pulse' : 'border-white/[0.08] bg-white/[0.03] text-white/60 hover:text-white'}`}>
+                <H.Mic size={14} />
+              </button>
+              <button onClick={() => send(input)} className="h-9 w-9 rounded-xl accent-bg text-white flex items-center justify-center"><H.Send size={14} /></button>
+            </div>
+          </MDiv>
+        )}
+      </AnimatePresenceC>
+      <button onClick={() => setOpen((v) => !v)}
+        className="fixed right-5 bottom-40 z-40 flex h-14 w-14 items-center justify-center rounded-2xl text-white hover:scale-110 transition-all shadow-[0_10px_30px_rgba(0,0,0,0.6)] border border-[color:var(--accent-1)]/30"
+        style={{ background: 'linear-gradient(135deg, var(--accent-2), var(--accent-4))' }}
+        aria-label="Open chat">
+        {open ? <H.X size={22} /> : <H.MessageCircle size={22} />}
+        {!open && <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-emerald-400 border-2 border-black animate-pulse" />}
+      </button>
+    </>
+  );
+}
+
+const ACCENTS = ['purple', 'blue', 'cyan', 'pink'];
+const ACCENT_COLORS = { purple: '#a78bfa', blue: '#60a5fa', cyan: '#22d3ee', pink: '#f0abfc' };
+function AccentSwitcher({ accent, setAccent }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="fixed right-5 bottom-24 z-40 flex flex-col items-end gap-2">
+      <AnimatePresenceC>
+        {open && (
+          <MDiv initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="glass-strong rounded-2xl p-3 flex flex-col gap-2">
+            <div className="text-[10px] tracking-[0.2em] text-white/40 uppercase px-1">Accent</div>
+            {ACCENTS.map((a) => (
+              <button key={a} onClick={() => setAccent(a)} className="flex items-center gap-2 rounded-lg px-3 py-1.5 hover:bg-white/[0.05]">
+                <span className="h-3 w-3 rounded-full" style={{ background: ACCENT_COLORS[a], boxShadow: `0 0 8px ${ACCENT_COLORS[a]}` }} />
+                <span className={`text-xs capitalize ${accent === a ? 'text-white' : 'text-white/60'}`}>{a}</span>
+              </button>
+            ))}
+          </MDiv>
+        )}
+      </AnimatePresenceC>
+      <button onClick={() => setOpen((v) => !v)}
+        className="flex h-12 w-12 items-center justify-center rounded-2xl text-white hover:scale-110 transition-all border border-[color:var(--accent-1)]/30 shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
+        style={{ background: 'linear-gradient(135deg, var(--accent-2), var(--accent-4))' }}
+        aria-label="Change accent">
+        <H.Palette size={20} />
+      </button>
+    </div>
+  );
+}
+
+function BackToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 600);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <AnimatePresenceC>
+      {show && (
+        <MDiv initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="fixed right-5 bottom-5 z-40">
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex h-11 w-11 items-center justify-center rounded-xl accent-bg text-white" aria-label="Back to top">
+            <H.ArrowUp size={18} />
+          </button>
+        </MDiv>
+      )}
+    </AnimatePresenceC>
+  );
+}
+
+function MusicToggle() {
+  const ctxRef = useRef(null); const oscRef = useRef(null); const gainRef = useRef(null);
+  const [on, setOn] = useState(false);
+  const { push } = React.useContext(ToastContext);
+  const toggle = () => {
+    try {
+      if (!on) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) { push('Audio not supported', 'X'); return; }
+        const ctx = new Ctx();
+        const osc1 = ctx.createOscillator(); const osc2 = ctx.createOscillator(); const gain = ctx.createGain();
+        osc1.type = 'sine'; osc1.frequency.value = 110;
+        osc2.type = 'sine'; osc2.frequency.value = 164.81;
+        gain.gain.value = 0;
+        osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+        osc1.start(); osc2.start();
+        gain.gain.linearRampToValueAtTime(0.02, ctx.currentTime + 1.5);
+        ctxRef.current = ctx; oscRef.current = [osc1, osc2]; gainRef.current = gain;
+        setOn(true); push('Ambient sound on', 'Music');
+      } else {
+        gainRef.current?.gain.linearRampToValueAtTime(0, ctxRef.current.currentTime + 0.6);
+        setTimeout(() => { oscRef.current?.forEach((o) => { try { o.stop(); } catch(e){} }); ctxRef.current?.close(); setOn(false); }, 700);
+        push('Sound off', 'VolumeX');
+      }
+    } catch (e) { push('Audio unavailable', 'X'); }
+  };
+  return (
+    <button onClick={toggle}
+      className={`fixed left-5 bottom-5 z-40 flex h-12 w-12 items-center justify-center rounded-2xl transition-all hover:scale-110 border shadow-[0_10px_30px_rgba(0,0,0,0.6)] ${on ? 'text-white border-[color:var(--accent-1)]' : 'text-white/70 border-white/[0.1]'}`}
+      style={on ? { background: 'linear-gradient(135deg, var(--accent-2), var(--accent-4))' } : { background: 'rgba(255,255,255,0.05)' }}
+      aria-label="Ambient sound">
+      {on ? <H.Volume2 size={20} /> : <H.VolumeX size={20} />}
+    </button>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="relative border-t border-white/[0.06] mt-12">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 py-12">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+          <div>
+            <div className="text-sm font-bold tracking-[0.2em]">{portfolio.personal.shortName}</div>
+            <div className="mt-2 text-xs text-white/50">{portfolio.footer.tagline}</div>
+          </div>
+          <div>
+            <div className="text-[11px] tracking-[0.2em] text-white/40 uppercase mb-3">Navigation</div>
+            <ul className="grid grid-cols-2 gap-2 text-sm">
+              {portfolio.nav.map((n) => (
+                <li key={n.href}><a href={n.href} onClick={(e) => { e.preventDefault(); const el = document.querySelector(n.href); if (el) el.scrollIntoView({ behavior: 'smooth' }); }} className="text-white/60 hover:text-white">{n.label}</a></li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <div className="text-[11px] tracking-[0.2em] text-white/40 uppercase mb-3">Social</div>
+            <div className="flex gap-3">
+              <SocialBox href={portfolio.socials.github} icon="github" label="GitHub" size="sm" />
+              <SocialBox href={portfolio.socials.linkedin} icon="linkedin" label="LinkedIn" size="sm" />
+              <SocialBox href={portfolio.socials.instagram} icon="instagram" label="Instagram" size="sm" />
+              <SocialBox href={`mailto:${portfolio.socials.email}`} icon="email" label="Email" size="sm" />
+            </div>
+          </div>
+        </div>
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/[0.06] pt-6 sm:flex-row">
+          <div className="text-xs text-white/40">{portfolio.footer.copyright}</div>
+          <div className="text-xs text-white/40">{portfolio.footer.builtWith}</div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function App() {
+  const [loading, setLoading] = useState(true);
+  const [activeProject, setActiveProject] = useState(null);
+  const [accent, setAccent] = useState('purple');
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => { document.documentElement.setAttribute('data-accent', accent); }, [accent]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setPaletteOpen((v) => !v); }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  useEffect(() => {
+    if (loading) return;
+    const sections = portfolio.nav.map((n) => document.querySelector(n.href)).filter(Boolean);
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) setActiveSection(e.target.id); }), { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, [loading]);
+
+  if (loading) return <Preloader onDone={() => setLoading(false)} />;
+
+  return (
+    <AchievementsProvider>
+      <ToastProvider>
+        <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
+          <AnimatedBackground />
+          <CustomCursor />
+          <RippleEffect />
+          <ScrollProgress />
+          <Navbar onOpenPalette={() => setPaletteOpen(true)} />
+          <SectionIndicator active={activeSection} />
+          <main className="relative z-[2]">
+            <Hero />
+            <HeroStats />
+            <TechMarquee />
+            <About />
+            <Focus />
+            <Skills />
+            <Projects onOpen={setActiveProject} />
+            <Experience />
+            <Certifications />
+            <Testimonials />
+            <GithubSection />
+            <LinkedInSection />
+            <Contact />
+          </main>
+          <Footer />
+          <AccentSwitcher accent={accent} setAccent={setAccent} />
+          <Chatbot />
+          <MusicToggle />
+          <BackToTop />
+          <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+          <AnimatePresenceC>
+            {activeProject && (<ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />)}
+          </AnimatePresenceC>
+        </div>
+      </ToastProvider>
+    </AchievementsProvider>
+  );
+}
+
+/* Load projects / skills / experience / certifications from the PostgreSQL-backed API.
+   If the API is unreachable the built-in defaults above are used, so the site never breaks. */
+async function loadPortfolioFromApi() {
+  try {
+    const res = await fetch('/api/portfolio');
+    if (!res.ok) return;
+    const d = await res.json();
+    if (d.projects && d.projects.length) {
+      portfolio.projects.items = d.projects.map((p) => ({ ...p, links: p.links || {} }));
+      const tags = new Set();
+      d.projects.forEach((p) => (p.filterTags || []).forEach((t) => tags.add(t)));
+      portfolio.projects.filters = ['All', ...tags];
+    }
+    if (d.skillCategories && d.skillCategories.length) portfolio.skills.categories = d.skillCategories;
+    if (d.experiences && d.experiences.length) portfolio.experience.items = d.experiences;
+    if (d.certifications && d.certifications.length) portfolio.certifications.items = d.certifications;
+  } catch (e) { console.warn('API unavailable, using built-in content.', e); }
+}
+loadPortfolioFromApi().finally(() => {
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+});
+</script>
+</body>
+</html>
