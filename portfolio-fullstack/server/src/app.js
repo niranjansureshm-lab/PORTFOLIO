@@ -7,6 +7,7 @@ const { notFound, errorHandler } = require('./middleware/errorHandler');
 const content = require('./routes/content');
 
 const app = express();
+app.set('trust proxy', 1); // behind Render/Railway proxy (needed for rate limiting)
 
 // The portfolio uses CDN scripts (Tailwind, React, Babel) + inline JSX, so CSP is relaxed for pages
 // but all other helmet protections stay on.

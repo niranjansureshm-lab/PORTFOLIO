@@ -1,13 +1,8 @@
 const { Pool } = require('pg');
+const { getConfig } = require('./dbConfig');
 
-const pool = new Pool({
-  host: process.env.DB_HOST || 'localhost',
-  port: Number(process.env.DB_PORT || 5432),
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'portfolio_db',
-  max: 10,
-});
+const { hosted, ...cfg } = getConfig();
+const pool = new Pool({ ...cfg, max: 10 });
 
 pool.on('error', (err) => console.error('Unexpected PG pool error:', err.message));
 

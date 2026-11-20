@@ -10,16 +10,13 @@ const { Client } = require('pg');
 const bcrypt = require('bcryptjs');
 const seed = require('./seedData');
 
-const cfg = {
-  host: process.env.DB_HOST || 'localhost',
-  port: Number(process.env.DB_PORT || 5432),
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || '',
-};
-const DB_NAME = process.env.DB_NAME || 'portfolio_db';
+const { getConfig } = require('../src/config/dbConfig');
+const { hosted, database: DB_NAME, ...cfg } = getConfig();
 const reset = process.argv.includes('--reset');
 
 async function ensureDatabase() {
+  // On hosted services (Neon, Render...) the database already exists - skip creating it.
+  if (hosted) { console.log(`✔ Using hosted database "${DB_NAME}"`); return; }
   const admin = new Client({ ...cfg, database: 'postgres' });
   await admin.connect();
   const { rowCount } = await admin.query('SELECT 1 FROM pg_database WHERE datname = $1', [DB_NAME]);
